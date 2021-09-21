@@ -5,6 +5,7 @@ import com.ecommerce.data.repository.BuyerRepository;
 import com.ecommerce.data.repository.ProductRepository;
 import com.ecommerce.data.repository.SellerRepository;
 import com.ecommerce.web.exceptions.AccountCreationException;
+import com.ecommerce.web.exceptions.AccountException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +68,22 @@ public class BuyerServicesImpl implements BuyerServices {
     }
 
     @Override
-    public CustomerUpdateDto updateAccount(BuyerRequestDto buyerRequestDto) {
-        return null;
+    public CustomerUpdateDto updateAccount(CustomerUpdateDto customerUpdateDto) throws AccountException {
+        if(customerUpdateDto.getEmailAddress().isBlank()){
+            throw new AccountException("Customer email address cannot be blank, please enter a valid email address ");
+        }
+        if(customerUpdateDto.getPreviousPassword().isBlank()){
+            throw new AccountException("Customer password cannot be blank, please enter a valid password");
+        }
+        if(customerUpdateDto.getNewPassword().isBlank()){
+            throw new AccountException("Customer password cannot be blank, please enter a valid password");
+        }
+        Buyer buyer=buyerRepository.findCustomerByEmailAddress(customerUpdateDto.getEmailAddress()).orElseThrow(
+                () -> new AccountException("Customer With this email does not exist"));
+        modelMapper.map(customerUpdateDto,buyer);
+        log.info("buyer information after update -->{}",buyer);
+        buyerRepository.save(buyer);
+        return customerUpdateDto;
     }
 
 
