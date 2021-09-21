@@ -12,8 +12,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Buyer extends Customer {
     @Id
-    private String BuyerId;
-
+    private String buyerId;
     @ManyToOne
     private Cart cart;
 

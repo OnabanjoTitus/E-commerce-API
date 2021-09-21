@@ -1,16 +1,14 @@
 package com.ecommerce.services;
 
 import com.ecommerce.data.models.*;
-import com.ecommerce.data.repository.BuyerRepository;
+import com.ecommerce.data.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Service
-public class BuyerServicesImpl implements BuyerServices {
 
+public class SellerServicesImpl  implements SellerServices{
     @Autowired
-    BuyerRepository buyerRepository;
+    SellerRepository sellerRepository;
 
     @Override
     public CustomerCreationDto addAccount(CustomerCreationDto customerCreationDto) {
@@ -37,5 +35,8 @@ public class BuyerServicesImpl implements BuyerServices {
         return null;
     }
 
-
+    @Override
+    public Product sellerUploadsProduct(String loginToken, ProductDto productDto) {
+        return null;
+    }
 }

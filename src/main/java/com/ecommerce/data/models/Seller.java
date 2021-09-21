@@ -15,7 +15,9 @@ import java.util.List;
 @Entity
 public class Seller extends Customer {
     @Id
-    private String BuyerId;
+    private String sellerId;
+    private String sellerName;
+    private String sellerLocation;
     @OneToMany
     private List<Product> products=new ArrayList<>();
 }
