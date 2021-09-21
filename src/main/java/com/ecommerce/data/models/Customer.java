@@ -12,12 +12,10 @@ import javax.persistence.Id;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    private String emailAddress;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private Role role;
+    private Integer customerId;
+    private String customerEmailAddress;
+    private String customerPassword;
+    private Role customerRole;
 
 
 }
