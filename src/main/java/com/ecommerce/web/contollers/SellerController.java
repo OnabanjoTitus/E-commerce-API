@@ -1,14 +1,11 @@
 package com.ecommerce.web.contollers;
 
 import com.ecommerce.data.models.BuyerRequestDto;
-import com.ecommerce.data.models.Role;
 import com.ecommerce.data.models.SellerRequestDto;
 import com.ecommerce.services.SellerServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/customer")
@@ -18,7 +15,12 @@ public class SellerController {
     SellerServices sellerServices;
 
     @PostMapping("/sellerRegistration")
-    public BuyerRequestDto createAccount(SellerRequestDto sellerRequestDto){
+    public BuyerRequestDto createAccount(@RequestBody SellerRequestDto sellerRequestDto){
+        sellerServices.addAccount(sellerRequestDto);
+        return sellerRequestDto;
+    }
+    @PostMapping("/productUpload")
+    public SellerRequestDto uploadProduct(@RequestParam String authentication, SellerRequestDto sellerRequestDto){
         sellerServices.addAccount(sellerRequestDto);
         return sellerRequestDto;
     }

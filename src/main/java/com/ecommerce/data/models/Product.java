@@ -20,5 +20,8 @@ public class Product {
     private String productImage;
     @Column
     private String productCategory;
+    @Column
+    @OneToOne
+    private Seller seller;
 
 }

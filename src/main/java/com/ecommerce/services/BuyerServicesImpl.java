@@ -2,6 +2,8 @@ package com.ecommerce.services;
 
 import com.ecommerce.data.models.*;
 import com.ecommerce.data.repository.BuyerRepository;
+import com.ecommerce.data.repository.ProductRepository;
+import com.ecommerce.data.repository.SellerRepository;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -9,13 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Slf4j
 public class BuyerServicesImpl implements BuyerServices {
 
     @Autowired
     BuyerRepository buyerRepository;
-
+    @Autowired
+    SellerRepository sellerRepository;
+    @Autowired
+    ProductRepository productRepository;
     @Autowired
     ModelMapper modelMapper;
 
@@ -23,13 +30,13 @@ public class BuyerServicesImpl implements BuyerServices {
     public BuyerRequestDto addAccount(BuyerRequestDto buyerRequestDto) throws AccountCreationException {
         log.info("The Customer Information received is -->{}", buyerRequestDto);
         if(buyerRequestDto.getEmailAddress().isBlank()){
-            throw new AccountCreationException("Account Name cannot be blank, please enter a valid name");
+            throw new AccountCreationException("Customer email address cannot be blank, please enter a valid email address ");
         }
         if(buyerRequestDto.getPassword().isBlank()){
-            throw new AccountCreationException("Account Name cannot be blank, please enter a valid name");
+            throw new AccountCreationException("Customer password cannot be blank, please enter a valid password");
         }
         if(!buyerRequestDto.getPassword().equals(buyerRequestDto.getConfirmPassword())){
-            throw new AccountCreationException("Account Name cannot be blank, please enter a valid name");
+            throw new AccountCreationException("The Passwords do not match please enter matching passwords");
         }
         Buyer buyer= new Buyer();
         buyer.setCustomerRole(Role.BUYER);
@@ -39,18 +46,24 @@ public class BuyerServicesImpl implements BuyerServices {
     }
 
     @Override
-    public List<Customer> findSellerByName(String sellerName) {
-        return null;
+    public List<SellerDto> findSellerByName(String sellerName) {
+        List<SellerDto> sellerDtoList =sellerRepository.findCustomerByEmailAddress(sellerName)
+                .stream().map(seller ->modelMapper.map(seller, SellerDto.class)).collect(Collectors.toList());
+        return sellerDtoList;
     }
 
     @Override
-    public List<Product> findProductsByName(String productName) {
-        return null;
+    public List<ProductRequest> findProductsByName(String productName) {
+        List<ProductRequest> productRequestList=productRepository.findAllByProductNameContains(productName)
+                .stream().map(product -> modelMapper.map(product,ProductRequest.class)).collect(Collectors.toList());
+        return productRequestList;
     }
 
     @Override
-    public List<Product> findProductsBySellerName(String sellerName) {
-        return null;
+    public List<ProductRequest> findProductsBySellerName(String sellerName) {
+        List<ProductRequest> productRequestList=productRepository.findAllBySellerSellerNameContains(sellerName)
+                .stream().map(product -> modelMapper.map(product,ProductRequest.class)).collect(Collectors.toList());
+        return productRequestList;
     }
 
     @Override
