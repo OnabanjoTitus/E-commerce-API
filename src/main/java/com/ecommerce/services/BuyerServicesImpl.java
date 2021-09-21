@@ -1,18 +1,16 @@
 package com.ecommerce.services;
 
-import com.ecommerce.data.models.Customer;
-import com.ecommerce.data.models.CustomerCreationDto;
-import com.ecommerce.data.models.CustomerUpdateDto;
-import com.ecommerce.data.models.Product;
-import com.ecommerce.data.repository.CustomerRepository;
+import com.ecommerce.data.models.*;
+import com.ecommerce.data.repository.BuyerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-public class CustomerServicesImpl implements CustomerServices{
+@Service
+public class BuyerServicesImpl implements BuyerServices {
 
     @Autowired
-    CustomerRepository customerRepository;
+    BuyerRepository buyerRepository;
 
     @Override
     public CustomerCreationDto addAccount(CustomerCreationDto customerCreationDto) {
@@ -33,4 +31,6 @@ public class CustomerServicesImpl implements CustomerServices{
     public CustomerUpdateDto updateAccount(CustomerCreationDto customerCreationDto) {
         return null;
     }
+
+
 }

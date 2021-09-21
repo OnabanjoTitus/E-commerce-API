@@ -7,4 +7,5 @@ public class CustomerCreationDto {
     private String emailAddress;
     private String password;
     private String confirmPassword;
+    private Role role;
 }

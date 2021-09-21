@@ -4,8 +4,7 @@ import com.ecommerce.data.models.*;
 
 import java.util.List;
 
-
-public interface CustomerServices {
+public interface SellerServices {
     CustomerCreationDto addAccount(CustomerCreationDto customerCreationDto);
     List<Customer> findSellerByName(String sellerName);
     List<Product> findProductsByName(String productName);
