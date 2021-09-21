@@ -6,6 +6,7 @@ import com.ecommerce.data.repository.ProductRepository;
 import com.ecommerce.data.repository.SellerRepository;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
+import com.ecommerce.web.exceptions.ProductException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,23 +48,41 @@ public class BuyerServicesImpl implements BuyerServices {
     }
 
     @Override
-    public List<SellerDto> findSellerByName(String sellerName) {
+    public List<SellerDto> findSellerByName(String sellerName) throws AccountException {
+        if(sellerName.isBlank()){
+            throw new AccountException("Seller Name cannot be blank");
+        }
         List<SellerDto> sellerDtoList =sellerRepository.findCustomerByEmailAddress(sellerName)
                 .stream().map(seller ->modelMapper.map(seller, SellerDto.class)).collect(Collectors.toList());
+        if(sellerDtoList.isEmpty()){
+            throw new AccountException("We do not have seller with the name "+sellerName+" in our records");
+        }
         return sellerDtoList;
     }
 
     @Override
-    public List<ProductRequest> findProductsByName(String productName) {
+    public List<ProductRequest> findProductsByName(String productName) throws ProductException {
+        if(productName.isBlank()){
+            throw new ProductException("product Name cannot be blank");
+        }
         List<ProductRequest> productRequestList=productRepository.findAllByProductNameContains(productName)
                 .stream().map(product -> modelMapper.map(product,ProductRequest.class)).collect(Collectors.toList());
+        if(productRequestList.isEmpty()){
+            throw new ProductException("We do not have product with the name "+productName+" in our records");
+        }
         return productRequestList;
     }
 
     @Override
-    public List<ProductRequest> findProductsBySellerName(String sellerName) {
+    public List<ProductRequest> findProductsBySellerName(String sellerName) throws AccountException, ProductException {
+        if(sellerName.isBlank()){
+            throw new AccountException("product Name cannot be blank");
+        }
         List<ProductRequest> productRequestList=productRepository.findAllBySellerSellerNameContains(sellerName)
                 .stream().map(product -> modelMapper.map(product,ProductRequest.class)).collect(Collectors.toList());
+        if(productRequestList.isEmpty()){
+            throw new ProductException("We do not have seller with the name "+sellerName+" in our records");
+        }
         return productRequestList;
     }
 
