@@ -3,10 +3,7 @@ package com.ecommerce.data.models;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +12,7 @@ import java.util.List;
 @Entity
 public class Seller extends Customer {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String sellerId;
     private String sellerName;
     private String sellerLocation;

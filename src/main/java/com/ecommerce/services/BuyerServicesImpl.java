@@ -20,19 +20,21 @@ public class BuyerServicesImpl implements BuyerServices {
     ModelMapper modelMapper;
 
     @Override
-    public CustomerCreationDto addAccount(CustomerCreationDto customerCreationDto) throws AccountCreationException {
-        log.info("The Customer Information received is -->{}",customerCreationDto);
-        if(customerCreationDto.getEmailAddress().isBlank()){
+    public BuyerRequestDto addAccount(BuyerRequestDto buyerRequestDto) throws AccountCreationException {
+        log.info("The Customer Information received is -->{}", buyerRequestDto);
+        if(buyerRequestDto.getEmailAddress().isBlank()){
             throw new AccountCreationException("Account Name cannot be blank, please enter a valid name");
         }
-        if(customerCreationDto.getPassword().isBlank()){
+        if(buyerRequestDto.getPassword().isBlank()){
             throw new AccountCreationException("Account Name cannot be blank, please enter a valid name");
         }
-
+        if(!buyerRequestDto.getPassword().equals(buyerRequestDto.getConfirmPassword())){
+            throw new AccountCreationException("Account Name cannot be blank, please enter a valid name");
+        }
         Buyer buyer= new Buyer();
-        modelMapper.map(customerCreationDto,buyer);
+        buyer.setCustomerRole(Role.BUYER);
+        modelMapper.map(buyerRequestDto,buyer);
         buyerRepository.save(buyer);
-
         return null;
     }
 
@@ -52,7 +54,7 @@ public class BuyerServicesImpl implements BuyerServices {
     }
 
     @Override
-    public CustomerUpdateDto updateAccount(CustomerCreationDto customerCreationDto) {
+    public CustomerUpdateDto updateAccount(BuyerRequestDto buyerRequestDto) {
         return null;
     }
 

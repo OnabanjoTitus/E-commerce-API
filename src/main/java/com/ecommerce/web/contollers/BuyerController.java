@@ -1,8 +1,8 @@
 package com.ecommerce.web.contollers;
 
-import com.ecommerce.data.models.CustomerCreationDto;
-import com.ecommerce.data.models.Role;
+import com.ecommerce.data.models.BuyerRequestDto;
 import com.ecommerce.services.BuyerServices;
+import com.ecommerce.web.exceptions.AccountCreationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,9 +17,9 @@ public class BuyerController {
     BuyerServices buyerServices;
 
     @PostMapping("/buyerRegistration")
-    public CustomerCreationDto createAccount(CustomerCreationDto customerCreationDto){
-        buyerServices.addAccount(customerCreationDto);
-        return customerCreationDto;
+    public BuyerRequestDto createAccount(BuyerRequestDto buyerRequestDto) throws AccountCreationException {
+        buyerServices.addAccount(buyerRequestDto);
+        return buyerRequestDto;
     }
 
 }
