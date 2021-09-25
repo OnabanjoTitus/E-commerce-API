@@ -46,7 +46,7 @@ public class SellerServicesImpl  implements SellerServices{
             throw new AccountCreationException("The Passwords do not match please enter matching passwords");
         }
         Seller seller= new Seller();
-        seller.setCustomerRole(Role.SELLER);
+        seller.setRole(Role.SELLER);
         modelMapper.map(sellerRequestDto,seller);
         log.info("The seller before saving is -->{}",seller);
         sellerRepository.save(seller);
@@ -119,6 +119,9 @@ public class SellerServicesImpl  implements SellerServices{
             throw new ProductException("Product image cannot be empty");
         }
         //Todo : find seller by token and upload a product
+        //product will have the seller
+        //And the seller will also have the product
+
         Product product= new Product();
         if(productDto.getProductImage()!=null && !productDto.getProductImage().isEmpty()){
             Map<Object,Object> params=new HashMap<>();
@@ -133,6 +136,7 @@ public class SellerServicesImpl  implements SellerServices{
             }
 
         }
+
 
         return null;
     }

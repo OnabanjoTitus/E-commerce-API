@@ -3,7 +3,6 @@ package com.ecommerce.services;
 
 import com.ecommerce.data.models.*;
 import com.ecommerce.data.repository.BuyerRepository;
-import com.ecommerce.data.repository.SellerRepository;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import org.junit.jupiter.api.AfterEach;

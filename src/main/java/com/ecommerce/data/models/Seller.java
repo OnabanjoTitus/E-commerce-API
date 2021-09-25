@@ -38,11 +38,11 @@ public class Seller implements UserDetails {
     private String sellerPassword;
 
     @Column
-    private Role customerRole;
+    private Role Role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority simpleGrantedAuthority= new SimpleGrantedAuthority(getCustomerRole().name());
+        SimpleGrantedAuthority simpleGrantedAuthority= new SimpleGrantedAuthority(getRole().name());
         return Collections.singletonList(simpleGrantedAuthority);
     }
 
