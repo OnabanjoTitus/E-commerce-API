@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/customer/")
+@RequestMapping("/api/v1/customer")
 @Slf4j
 public class BuyerController {
 
     @Autowired
     BuyerServices buyerServices;
 
-    @PostMapping("buyer/buyerRegistration")
+    @PostMapping("/buyer/buyerRegistration")
     public ResponseEntity<?> createAccount(CustomerRequestDto customerRequestDto){
            try{
                return new ResponseEntity<>( buyerServices.addAccount(customerRequestDto), HttpStatus.OK);
@@ -60,7 +60,7 @@ public class BuyerController {
             return new ResponseEntity<>(exception.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping("/buyerRegistration")
+    @PostMapping("/buyerAccountUpdate")
     public ResponseEntity<?> updateAccount(CustomerUpdateDto customerUpdateDto){
         try{
             return new ResponseEntity<>( buyerServices.updateAccount(customerUpdateDto), HttpStatus.OK);
