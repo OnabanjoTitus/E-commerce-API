@@ -1,12 +1,8 @@
 package com.ecommerce.security.service;
 
-import com.autox.dtos.UserLoginDto;
-import com.autox.exceptions.IncorrectPasswordException;
-import com.autox.models.UserEntity;
-import com.autox.repositories.UserRepository;
-import com.autox.security.AppAuthenticationProvider;
-import com.autox.security.ApplicationUser;
-import com.autox.security.JWTToken;
+import com.ecommerce.data.repository.BuyerRepository;
+import com.ecommerce.data.repository.SellerRepository;
+import com.ecommerce.security.security.AppAuthenticationProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +21,9 @@ import java.util.UUID;
 @Service
 public class UserPrincipalService implements UserDetailsService {
     @Autowired
-    UserRepository userRepository;
+    BuyerRepository buyerRepository;
+    @Autowired
+    SellerRepository sellerRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired

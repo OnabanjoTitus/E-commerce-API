@@ -12,4 +12,5 @@ public interface SellerRepository extends JpaRepository<Seller,Integer> {
 
     Optional<Seller>findAllSellerBySellerName(String SellerName);
     Optional<Seller>findAllSellerBySellerNameContaining(String sellerName);
+    Optional<Seller>findSellerBySellerEmailAddress(String sellerEmail);
 }

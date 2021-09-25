@@ -1,6 +1,7 @@
 package com.ecommerce.services;
 
 import com.ecommerce.data.models.*;
+import com.ecommerce.data.repository.BuyerRepository;
 import com.ecommerce.data.repository.ProductRepository;
 import com.ecommerce.data.repository.SellerRepository;
 import com.ecommerce.services.cloud.CloudStorageService;
@@ -28,6 +29,9 @@ public class SellerServicesImpl  implements SellerServices{
     SellerRepository sellerRepository;
 
     @Autowired
+    BuyerRepository buyerRepository;
+
+    @Autowired
     ModelMapper modelMapper;
 
     @Autowired
@@ -44,6 +48,9 @@ public class SellerServicesImpl  implements SellerServices{
         }
         if(!sellerRequestDto.getSellerPassword().equals(sellerRequestDto.getConfirmPassword())){
             throw new AccountCreationException("The Passwords do not match please enter matching passwords");
+        }
+        if(buyerRepository.findBuyerByBuyerEmailAddress(sellerRequestDto.getSellerEmailAddress()).isPresent()){
+            throw new AccountCreationException("Customer is already a buyer, you cannot have multiple accounts with the same email");
         }
         Seller seller= new Seller();
         seller.setRole(Role.SELLER);

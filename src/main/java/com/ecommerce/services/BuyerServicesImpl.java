@@ -38,6 +38,9 @@ public class BuyerServicesImpl implements BuyerServices {
         if(buyerRequestDto.getBuyerPassword().isBlank()){
             throw new AccountCreationException("Customer password cannot be blank, please enter a valid password");
         }
+        if(sellerRepository.findSellerBySellerEmailAddress(buyerRequestDto.getBuyerEmailAddress()).isPresent()){
+            throw new AccountCreationException("Customer is already a seller, you cannot have multiple accounts with the same email");
+        }
         if(!buyerRequestDto.getBuyerPassword().equals(buyerRequestDto.getConfirmPassword())){
             throw new AccountCreationException("The Passwords do not match please enter matching passwords");
         }

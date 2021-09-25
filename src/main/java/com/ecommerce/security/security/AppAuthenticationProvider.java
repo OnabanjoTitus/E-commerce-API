@@ -1,9 +1,5 @@
 package com.ecommerce.security.security;
 
-import com.autox.exceptions.AuthorizationException;
-import com.autox.models.Role;
-import com.autox.models.UserEntity;
-import com.autox.repositories.UserRepository;
 import com.ecommerce.data.repository.BuyerRepository;
 import com.ecommerce.data.repository.SellerRepository;
 import lombok.SneakyThrows;
@@ -58,7 +54,8 @@ public class AppAuthenticationProvider implements AuthenticationManager {
 //        List<Role> authorities = Collections.singletonList(user.get().getRole());
 //        log.info("Authorities content " + user.get().getRole());
 //        if(user.get().getRole() == null) throw new AuthorizationException("User has no authority");
-        return new UsernamePasswordAuthenticationToken(username, password, authorities.stream().map(authority
-                -> new SimpleGrantedAuthority(authority.name())).collect(Collectors.toList()));
+//        return new UsernamePasswordAuthenticationToken(username, password, authorities.stream().map(authority
+//                -> new SimpleGrantedAuthority(authority.name())).collect(Collectors.toList()));
+        return null;
     }
 }
