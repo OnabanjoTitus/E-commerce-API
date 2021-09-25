@@ -1,4 +1,4 @@
-package com.ecommerce.security;
+package com.ecommerce.security.config;
 
 
 import lombok.AllArgsConstructor;
