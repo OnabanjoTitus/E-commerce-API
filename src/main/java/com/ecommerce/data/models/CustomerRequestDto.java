@@ -3,7 +3,7 @@ package com.ecommerce.data.models;
 import lombok.Data;
 
 @Data
-public class BuyerRequestDto {
+public class CustomerRequestDto {
     private String emailAddress;
     private String password;
     private String confirmPassword;

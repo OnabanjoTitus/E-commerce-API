@@ -18,7 +18,7 @@ public class SellerServicesImpl  implements SellerServices{
     ModelMapper modelMapper;
 
     @Override
-    public BuyerRequestDto addAccount(SellerRequestDto sellerRequestDto) {
+    public CustomerRequestDto addAccount(SellerRequestDto sellerRequestDto) {
         return null;
     }
 

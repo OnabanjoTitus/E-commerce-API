@@ -20,8 +20,8 @@ public class Product {
     private String productImage;
     @Column
     private String productCategory;
-    @Column
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn
     private Seller seller;
 
 }

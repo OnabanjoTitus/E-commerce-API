@@ -1,6 +1,6 @@
 package com.ecommerce.web.contollers;
 
-import com.ecommerce.data.models.BuyerRequestDto;
+import com.ecommerce.data.models.CustomerRequestDto;
 import com.ecommerce.data.models.SellerRequestDto;
 import com.ecommerce.services.SellerServices;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ public class SellerController {
     SellerServices sellerServices;
 
     @PostMapping("/sellerRegistration")
-    public BuyerRequestDto createAccount(@RequestBody SellerRequestDto sellerRequestDto){
+    public CustomerRequestDto createAccount(@RequestBody SellerRequestDto sellerRequestDto){
         sellerServices.addAccount(sellerRequestDto);
         return sellerRequestDto;
     }

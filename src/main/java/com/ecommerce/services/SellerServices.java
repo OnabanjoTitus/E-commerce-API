@@ -5,7 +5,7 @@ import com.ecommerce.data.models.*;
 import java.util.List;
 
 public interface SellerServices {
-    BuyerRequestDto addAccount(SellerRequestDto sellerRequestDto);
+    CustomerRequestDto addAccount(SellerRequestDto sellerRequestDto);
     List<Customer> findSellerByName(String sellerName);
     List<Product> findProductsByName(String productName);
     List<Product> findProductsBySellerName(String sellerName);

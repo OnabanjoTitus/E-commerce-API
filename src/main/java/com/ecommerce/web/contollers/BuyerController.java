@@ -1,8 +1,9 @@
 package com.ecommerce.web.contollers;
 
-import com.ecommerce.data.models.BuyerRequestDto;
+import com.ecommerce.data.models.CustomerRequestDto;
 import com.ecommerce.data.models.CustomerUpdateDto;
 import com.ecommerce.services.BuyerServices;
+import com.ecommerce.web.contollers.util.APIROUTES;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import com.ecommerce.web.exceptions.ProductException;
@@ -16,17 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/customer")
+@RequestMapping("/api/v1/customer/")
 @Slf4j
 public class BuyerController {
 
     @Autowired
     BuyerServices buyerServices;
 
-    @PostMapping("/buyerRegistration")
-    public ResponseEntity<?> createAccount(BuyerRequestDto buyerRequestDto){
+    @PostMapping("buyer/buyerRegistration")
+    public ResponseEntity<?> createAccount(CustomerRequestDto customerRequestDto){
            try{
-               return new ResponseEntity<>( buyerServices.addAccount(buyerRequestDto), HttpStatus.OK);
+               return new ResponseEntity<>( buyerServices.addAccount(customerRequestDto), HttpStatus.OK);
            }
            catch (AccountCreationException accountCreationException){
                return new ResponseEntity<>(accountCreationException.getMessage(),HttpStatus.BAD_REQUEST);

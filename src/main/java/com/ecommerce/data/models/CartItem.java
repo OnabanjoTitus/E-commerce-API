@@ -23,7 +23,7 @@ public class CartItem {
     private BigDecimal total;
     @NonNull
     private BigDecimal calculateCartItemPrice() {
-        return product.getPrice().multiply(BigDecimal.valueOf(this.quantity));
+        return product.getProductPrice().multiply(BigDecimal.valueOf(this.quantity));
     }
 
     public void increaseCartItemQuantity(int quantity){

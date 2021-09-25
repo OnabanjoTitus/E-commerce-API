@@ -9,9 +9,12 @@ import javax.persistence.Id;
 
 @Data
 public class Customer {
+
+    private Integer customerId;
     private String customerEmailAddress;
     private String customerPassword;
     private Role customerRole;
+
 
 
 }
