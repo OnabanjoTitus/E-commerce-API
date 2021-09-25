@@ -1,6 +1,6 @@
 package com.ecommerce.web.contollers;
 
-import com.ecommerce.data.models.CustomerRequestDto;
+import com.ecommerce.data.models.BuyerRequestDto;
 import com.ecommerce.data.models.CustomerUpdateDto;
 import com.ecommerce.services.BuyerServices;
 import com.ecommerce.web.exceptions.AccountCreationException;
@@ -22,9 +22,9 @@ public class BuyerController {
     BuyerServices buyerServices;
 
     @PostMapping("/buyerRegistration")
-    public ResponseEntity<?> createAccount(CustomerRequestDto customerRequestDto){
+    public ResponseEntity<?> createAccount(BuyerRequestDto buyerRequestDto){
            try{
-               return new ResponseEntity<>( buyerServices.addAccount(customerRequestDto), HttpStatus.OK);
+               return new ResponseEntity<>( buyerServices.addAccount(buyerRequestDto), HttpStatus.OK);
            }
            catch (AccountCreationException accountCreationException){
                return new ResponseEntity<>(accountCreationException.getMessage(),HttpStatus.BAD_REQUEST);

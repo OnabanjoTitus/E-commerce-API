@@ -12,13 +12,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
+
 @Data
 @Entity
-public class Seller extends Customer implements UserDetails {
+public class Seller implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String sellerId;
+    private Integer sellerId;
     @Column
     private String sellerName;
     @Column
@@ -32,6 +32,13 @@ public class Seller extends Customer implements UserDetails {
         }
         this.products.add(product);
     }
+    @Column
+    private String sellerEmailAddress;
+    @Column
+    private String sellerPassword;
+
+    @Column
+    private Role customerRole;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -41,12 +48,12 @@ public class Seller extends Customer implements UserDetails {
 
     @Override
     public String getPassword() {
-        return getCustomerPassword();
+        return getSellerPassword();
     }
 
     @Override
     public String getUsername() {
-        return getCustomerEmailAddress();
+        return getSellerEmailAddress();
     }
 
     @Override

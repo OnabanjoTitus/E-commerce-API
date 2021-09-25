@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public interface SellerServices {
-    CustomerRequestDto addAccount(CustomerRequestDto customerRequestDto) throws AccountCreationException;
+    SellerDto addAccount(SellerRequestDto sellerRequestDto) throws AccountCreationException;
     List<SellerDto> findSellerByName(String sellerName) throws AccountException;
     List<ProductRequest> findProductsByName(String productName) throws ProductException;
     List<ProductRequest> findProductsBySellerName(String sellerName) throws ProductException, AccountException;

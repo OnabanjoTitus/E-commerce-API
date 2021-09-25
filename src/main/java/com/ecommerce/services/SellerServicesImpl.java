@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,25 +34,24 @@ public class SellerServicesImpl  implements SellerServices{
     CloudStorageService cloudStorageService;
 
     @Override
-    public CustomerRequestDto addAccount(CustomerRequestDto customerRequestDto) throws AccountCreationException {
-        log.info("The Customer Information received is -->{}", customerRequestDto);
-        if(customerRequestDto.getEmailAddress().isBlank()){
+    public SellerDto addAccount(SellerRequestDto sellerRequestDto) throws AccountCreationException {
+        log.info("The Customer Information received is -->{}", sellerRequestDto);
+        if(sellerRequestDto.getSellerEmailAddress().isBlank()){
             throw new AccountCreationException("Customer email address cannot be blank, please enter a valid email address ");
         }
-        if(customerRequestDto.getPassword().isBlank()){
+        if(sellerRequestDto.getSellerPassword().isBlank()){
             throw new AccountCreationException("Customer password cannot be blank, please enter a valid password");
         }
-        if(!customerRequestDto.getPassword().equals(customerRequestDto.getConfirmPassword())){
+        if(!sellerRequestDto.getSellerPassword().equals(sellerRequestDto.getConfirmPassword())){
             throw new AccountCreationException("The Passwords do not match please enter matching passwords");
         }
-        if(customerRequestDto.getRole().equals(Role.BUYER)|| Objects.requireNonNull(customerRequestDto.getRole().toString()).isBlank()){
-            throw new AccountCreationException("This role is invalid for a seller");
-        }
         Seller seller= new Seller();
-        modelMapper.map(customerRequestDto,seller);
+        seller.setCustomerRole(Role.SELLER);
+        modelMapper.map(sellerRequestDto,seller);
         log.info("The seller before saving is -->{}",seller);
         sellerRepository.save(seller);
-        return null;
+        SellerDto sellerDto= new SellerDto(sellerRequestDto.getSellerEmailAddress(),sellerRequestDto.getSellerName(),sellerRequestDto.getSellerLocation());
+        return sellerDto;
     }
 
     @Override
@@ -61,10 +59,10 @@ public class SellerServicesImpl  implements SellerServices{
         if(sellerName.isBlank()){
             throw new AccountException("Seller Name cannot be blank");
         }
-        List<SellerDto> sellerDtoList = sellerRepository.findSellerBySellerName(sellerName)
+        List<SellerDto> sellerDtoList = sellerRepository.findAllSellerBySellerName(sellerName)
                 .stream().map(seller ->modelMapper.map(seller, SellerDto.class)).collect(Collectors.toList());
         if(sellerDtoList.isEmpty()){
-            sellerDtoList=sellerRepository.findSellerBySellerNameContaining(sellerName)
+            sellerDtoList=sellerRepository.findAllSellerBySellerNameContaining(sellerName)
                     .stream().map(seller -> modelMapper.map(seller,SellerDto.class))
                     .collect(Collectors.toList());
             if(sellerDtoList.isEmpty()){

@@ -10,7 +10,7 @@ import java.util.List;
 
 
 public interface BuyerServices {
-    CustomerRequestDto addAccount(CustomerRequestDto customerRequestDto) throws AccountCreationException;
+    BuyerDto addAccount(BuyerRequestDto buyerRequestDto) throws AccountCreationException;
     List<SellerDto> findSellerByName(String sellerName) throws AccountException;
     List<ProductRequest> findProductsByName(String productName) throws ProductException;
     List<ProductRequest> findProductsBySellerName(String sellerName) throws ProductException, AccountException;

@@ -10,30 +10,38 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-public class Buyer extends Customer implements UserDetails {
+public class Buyer implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String buyerId;
+    private Integer buyerId;
     @ManyToOne
     private Cart cart;
+    @Column
+    private String buyerEmailAddress;
+    @Column
+    private String buyerPassword;
+    @Column
+    private Role Role;
+
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority simpleGrantedAuthority= new SimpleGrantedAuthority(getCustomerRole().name());
+        SimpleGrantedAuthority simpleGrantedAuthority= new SimpleGrantedAuthority(getRole().name());
         return Collections.singletonList(simpleGrantedAuthority);
     }
 
     @Override
     public String getPassword() {
-        return getCustomerPassword();
+        return buyerPassword;
     }
 
     @Override
     public String getUsername() {
-        return getCustomerEmailAddress();
+        return buyerEmailAddress;
     }
 
     @Override

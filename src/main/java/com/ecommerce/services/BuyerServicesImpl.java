@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,25 +30,25 @@ public class BuyerServicesImpl implements BuyerServices {
     ModelMapper modelMapper;
 
     @Override
-    public CustomerRequestDto addAccount(CustomerRequestDto customerRequestDto) throws AccountCreationException {
-        log.info("The Customer Information received is -->{}", customerRequestDto);
-        if(customerRequestDto.getEmailAddress().isBlank()){
+    public BuyerDto addAccount(BuyerRequestDto buyerRequestDto) throws AccountCreationException {
+        log.info("The Customer Information received is -->{}", buyerRequestDto);
+        if(buyerRequestDto.getBuyerEmailAddress().isBlank()){
             throw new AccountCreationException("Customer email address cannot be blank, please enter a valid email address ");
         }
-        if(customerRequestDto.getPassword().isBlank()){
+        if(buyerRequestDto.getBuyerPassword().isBlank()){
             throw new AccountCreationException("Customer password cannot be blank, please enter a valid password");
         }
-        if(!customerRequestDto.getPassword().equals(customerRequestDto.getConfirmPassword())){
+        if(!buyerRequestDto.getBuyerPassword().equals(buyerRequestDto.getConfirmPassword())){
             throw new AccountCreationException("The Passwords do not match please enter matching passwords");
         }
-        if(customerRequestDto.getRole().equals(Role.SELLER)|| Objects.requireNonNull(customerRequestDto.getRole().toString()).isBlank()){
-            throw new AccountCreationException("This role is invalid for a buyer");
-        }
+
         Buyer buyer= new Buyer();
-        modelMapper.map(customerRequestDto,buyer);
+        buyer.setRole(Role.BUYER);
+        modelMapper.map(buyerRequestDto,buyer);
         log.info("The buyer before saving is -->{}",buyer);
         buyerRepository.save(buyer);
-        return null;
+        BuyerDto buyerDto= new BuyerDto(buyerRequestDto.getBuyerEmailAddress());
+        return buyerDto ;
     }
 
     @Override
@@ -58,10 +57,10 @@ public class BuyerServicesImpl implements BuyerServices {
         if(sellerName.isBlank()){
             throw new AccountException("Seller Name cannot be blank");
         }
-        List<SellerDto> sellerDtoList = sellerRepository.findSellerBySellerName(sellerName)
+        List<SellerDto> sellerDtoList = sellerRepository.findAllSellerBySellerName(sellerName)
                 .stream().map(seller ->modelMapper.map(seller, SellerDto.class)).collect(Collectors.toList());
         if(sellerDtoList.isEmpty()){
-           sellerDtoList=sellerRepository.findSellerBySellerNameContaining(sellerName)
+           sellerDtoList=sellerRepository.findAllSellerBySellerNameContaining(sellerName)
                    .stream().map(seller -> modelMapper.map(seller,SellerDto.class))
                    .collect(Collectors.toList());
             if(sellerDtoList.isEmpty()){
@@ -114,7 +113,7 @@ public class BuyerServicesImpl implements BuyerServices {
             throw new AccountException("Customer password cannot be blank, please enter a valid password");
         }
         //todo: we compare the user found with the token to the user retrieved
-        Buyer buyer= buyerRepository.findBuyerByCustomerEmailAddress(customerUpdateDto.getEmailAddress()).orElseThrow(
+        Buyer buyer= buyerRepository.findBuyerByBuyerEmailAddress(customerUpdateDto.getEmailAddress()).orElseThrow(
                 () -> new AccountException("Customer With this email does not exist"));
         if(!buyer.getPassword().equals(customerUpdateDto.getPreviousPassword())){
             throw new AccountException("Password is incorrect account cannot be updated");

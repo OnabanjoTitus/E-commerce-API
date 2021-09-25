@@ -1,6 +1,5 @@
 package com.ecommerce.web.contollers;
 
-import com.ecommerce.data.models.CustomerRequestDto;
 import com.ecommerce.data.models.ProductDto;
 import com.ecommerce.data.models.SellerRequestDto;
 import com.ecommerce.services.SellerServices;
