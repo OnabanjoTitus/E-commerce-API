@@ -14,10 +14,7 @@ public class CloudinaryCloudStorageServiceImpl implements CloudStorageService {
     @Autowired
     Cloudinary cloudinary;
 
-    @Override
-    public Map<?, ?> uploadImage(File file, Map<?, ?> imageProperties) throws IOException {
-        return cloudinary.uploader().upload(file,imageProperties);
-    }
+
 
     @Override
     public Map<?, ?> uploadImage(MultipartFile multipartFile, Map<?, ?> imageProperties) throws IOException {

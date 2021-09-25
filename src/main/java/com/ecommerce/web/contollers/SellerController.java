@@ -1,9 +1,12 @@
 package com.ecommerce.web.contollers;
 
 import com.ecommerce.data.models.CustomerRequestDto;
+import com.ecommerce.data.models.ProductDto;
 import com.ecommerce.data.models.SellerRequestDto;
 import com.ecommerce.services.SellerServices;
 import com.ecommerce.web.exceptions.AccountCreationException;
+import com.ecommerce.web.exceptions.AccountException;
+import com.ecommerce.web.exceptions.ProductException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,9 +30,14 @@ public class SellerController {
         }
 
     }
-//    @PostMapping("/productUpload")
-//    public SellerRequestDto uploadProduct(@RequestParam String authentication, SellerRequestDto sellerRequestDto){
-//        sellerServices.addAccount(sellerRequestDto);
-//        return sellerRequestDto;
-//    }
+    @PostMapping("/productUpload")
+    public ResponseEntity<?> uploadProduct(@RequestHeader("Authorization")String authentication, ProductDto productDto) {
+        try {
+            return new ResponseEntity<>(sellerServices.sellerUploadsProduct(authentication, productDto), HttpStatus.OK);
+        } catch (ProductException | AccountException exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
 }

@@ -3,6 +3,7 @@ package com.ecommerce.services;
 import com.ecommerce.data.models.*;
 import com.ecommerce.data.repository.ProductRepository;
 import com.ecommerce.data.repository.SellerRepository;
+import com.ecommerce.services.cloud.CloudStorageService;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import com.ecommerce.web.exceptions.ProductException;
@@ -11,7 +12,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -26,6 +30,9 @@ public class SellerServicesImpl  implements SellerServices{
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    CloudStorageService cloudStorageService;
 
     @Override
     public CustomerRequestDto addAccount(CustomerRequestDto customerRequestDto) throws AccountCreationException {
@@ -113,7 +120,26 @@ public class SellerServicesImpl  implements SellerServices{
         if(productDto.getProductImage().isEmpty()){
             throw new ProductException("Product image cannot be empty");
         }
+        //Todo : find seller by token and upload a product
+        Product product= new Product();
+        if(productDto.getProductImage()!=null && !productDto.getProductImage().isEmpty()){
+            Map<Object,Object> params=new HashMap<>();
+            params.put("public_id","e-commerce/"+extractFileName(productDto.getProductImage().getName()));
+            params.put("overwrite",true);
+            log.info("Image parameters-->{}",params);
+            try{
+                Map<?,?> uploadResult = cloudStorageService.uploadImage(productDto.getProductImage(),params);
+                product.setProductImage(String.valueOf(uploadResult.get("url")));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+        }
+
         return null;
+    }
+    private String extractFileName(String fileName){
+        return fileName.split("\\.")[0];
     }
 
 

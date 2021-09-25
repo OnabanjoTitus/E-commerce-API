@@ -6,6 +6,7 @@ import com.ecommerce.data.repository.ProductRepository;
 import com.ecommerce.data.repository.SellerRepository;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
+import com.ecommerce.web.exceptions.AuthorizationException;
 import com.ecommerce.web.exceptions.ProductException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -98,7 +99,11 @@ public class BuyerServicesImpl implements BuyerServices {
     }
 
     @Override
-    public CustomerUpdateDto updateAccount(CustomerUpdateDto customerUpdateDto) throws AccountException {
+    public CustomerUpdateDto updateAccount(String token,CustomerUpdateDto customerUpdateDto) throws AccountException, AuthorizationException {
+        if(token.isBlank()){
+            throw new AuthorizationException("User token cannot be empty");
+        }
+        //todo:this guy gets the userUniqueToken = tokenProviderService.getEmailFromToken(userToken);
         if(customerUpdateDto.getEmailAddress().isBlank()){
             throw new AccountException("Customer email address cannot be blank, please enter a valid email address ");
         }
@@ -108,6 +113,7 @@ public class BuyerServicesImpl implements BuyerServices {
         if(customerUpdateDto.getNewPassword().isBlank()){
             throw new AccountException("Customer password cannot be blank, please enter a valid password");
         }
+        //todo: we compare the user found with the token to the user retrieved
         Buyer buyer= buyerRepository.findBuyerByCustomerEmailAddress(customerUpdateDto.getEmailAddress()).orElseThrow(
                 () -> new AccountException("Customer With this email does not exist"));
         if(!buyer.getPassword().equals(customerUpdateDto.getPreviousPassword())){

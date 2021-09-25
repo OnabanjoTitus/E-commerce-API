@@ -3,18 +3,15 @@ package com.ecommerce.web.contollers;
 import com.ecommerce.data.models.CustomerRequestDto;
 import com.ecommerce.data.models.CustomerUpdateDto;
 import com.ecommerce.services.BuyerServices;
-import com.ecommerce.web.contollers.util.APIROUTES;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
+import com.ecommerce.web.exceptions.AuthorizationException;
 import com.ecommerce.web.exceptions.ProductException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/customer")
@@ -24,7 +21,7 @@ public class BuyerController {
     @Autowired
     BuyerServices buyerServices;
 
-    @PostMapping("/buyer/buyerRegistration")
+    @PostMapping("/buyerRegistration")
     public ResponseEntity<?> createAccount(CustomerRequestDto customerRequestDto){
            try{
                return new ResponseEntity<>( buyerServices.addAccount(customerRequestDto), HttpStatus.OK);
@@ -36,6 +33,7 @@ public class BuyerController {
     @GetMapping("/findSellerByName")
     public ResponseEntity<?> findSellerByName(String sellerName){
         try{
+
             return new ResponseEntity<>( buyerServices.findSellerByName(sellerName), HttpStatus.OK);
         }
         catch (AccountException accountException){
@@ -61,12 +59,13 @@ public class BuyerController {
         }
     }
     @PostMapping("/buyerAccountUpdate")
-    public ResponseEntity<?> updateAccount(CustomerUpdateDto customerUpdateDto){
+    public ResponseEntity<?> updateAccount(@RequestHeader("Authorization")String token,CustomerUpdateDto customerUpdateDto){
         try{
-            return new ResponseEntity<>( buyerServices.updateAccount(customerUpdateDto), HttpStatus.OK);
+
+            return new ResponseEntity<>( buyerServices.updateAccount(token,customerUpdateDto), HttpStatus.OK);
         }
-        catch (AccountException accountCreationException){
-            return new ResponseEntity<>(accountCreationException.getMessage(),HttpStatus.BAD_REQUEST);
+        catch (AccountException | AuthorizationException exception){
+            return new ResponseEntity<>(exception.getMessage(),  HttpStatus.BAD_REQUEST);
         }
     }
 
