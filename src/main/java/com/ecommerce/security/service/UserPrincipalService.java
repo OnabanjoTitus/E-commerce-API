@@ -1,8 +1,11 @@
 package com.ecommerce.security.service;
 
+import com.ecommerce.data.models.Buyer;
+import com.ecommerce.data.models.Seller;
 import com.ecommerce.data.repository.BuyerRepository;
 import com.ecommerce.data.repository.SellerRepository;
 import com.ecommerce.security.security.AppAuthenticationProvider;
+import com.ecommerce.security.security.JWTToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -36,14 +40,19 @@ public class UserPrincipalService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("Check this email " + username);
-        Optional<UserEntity> optionalUser = userRepository.findUserByEmail(username);
-        if(optionalUser.isEmpty()){
-            throw new UsernameNotFoundException("User with given email not found");
+        Optional<Seller>optionalSeller = Optional.empty();
+        Optional<Buyer> optionalBuyer=Optional.empty();
+
+         optionalBuyer= buyerRepository.findBuyerByBuyerEmailAddress(username);
+        if(optionalBuyer.isEmpty()){
+            optionalSeller=sellerRepository.findAllSellerBySellerName(username);
+            if(optionalSeller.isEmpty()){
+                throw new UsernameNotFoundException("User with given email not found");}
         }
-        else{
-            UserEntity user =  optionalUser.get();
-            return ApplicationUser.create(user);
+        if(optionalBuyer.isPresent()){
+            return Buyer.create(optionalBuyer.get());
         }
+        return Seller.create(optionalSeller.get());
     }
 
     public JWTToken loginUser(UserLoginDto userLoginDTO) throws UsernameNotFoundException, IncorrectPasswordException {
