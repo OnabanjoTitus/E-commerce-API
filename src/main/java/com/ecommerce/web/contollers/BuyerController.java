@@ -31,6 +31,7 @@ public class BuyerController {
                return new ResponseEntity<>(accountCreationException.getMessage(),HttpStatus.BAD_REQUEST);
            }
     }
+
     @GetMapping(ApiRoutes.BUYER+"/findSellerByName")
     public ResponseEntity<?> findSellerByName(String sellerName){
         try{

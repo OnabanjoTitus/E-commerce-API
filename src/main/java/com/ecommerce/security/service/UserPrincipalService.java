@@ -2,8 +2,10 @@ package com.ecommerce.security.service;
 
 import com.ecommerce.data.models.Buyer;
 import com.ecommerce.data.models.Seller;
+import com.ecommerce.data.models.UserLoginDto;
 import com.ecommerce.data.repository.BuyerRepository;
 import com.ecommerce.data.repository.SellerRepository;
+import com.ecommerce.security.exceptions.IncorrectPasswordException;
 import com.ecommerce.security.security.AppAuthenticationProvider;
 import com.ecommerce.security.security.JWTToken;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.AccountException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -47,16 +50,30 @@ public class UserPrincipalService implements UserDetailsService {
         if(optionalBuyer.isEmpty()){
             optionalSeller=sellerRepository.findAllSellerBySellerName(username);
             if(optionalSeller.isEmpty()){
-                throw new UsernameNotFoundException("User with given email not found");}
+                throw new UsernameNotFoundException("User with this email is not found");}
         }
         if(optionalBuyer.isPresent()){
-            return Buyer.create(optionalBuyer.get());
+            return optionalBuyer.get();
         }
-        return Seller.create(optionalSeller.get());
+        return optionalSeller.get();
     }
 
-    public JWTToken loginUser(UserLoginDto userLoginDTO) throws UsernameNotFoundException, IncorrectPasswordException {
-        Optional<UserEntity> userEntity = userRepository.findUserByEmail(userLoginDTO.getEmail());
+    public JWTToken loginUser(UserLoginDto userLoginDto) throws UsernameNotFoundException, IncorrectPasswordException, AccountException {
+       UserDetails userEntity = loadUserByUsername(userLoginDto.getEmailAddress());
+       String role=userEntity.getAuthorities().toString();
+       log.info("The role is -->{}",role);
+       switch (role){
+           case "Seller":
+               Seller seller=sellerRepository.findSellerBySellerEmailAddress(userLoginDto.getEmailAddress())
+                       .orElseThrow(()-> new UsernameNotFoundException("User with this email is not found"));
+                break;
+           case "Buyer":
+               Buyer buyer=buyerRepository.findBuyerByBuyerEmailAddress(userLoginDto.getEmailAddress())
+                       .orElseThrow(()-> new UsernameNotFoundException("User with this email is not found"));
+               break;
+           default:
+               throw new AccountException("Invalid account type");
+       }
 
         if(userEntity.isPresent()){
         log.info(userEntity.get().getPassword() + " user password ==================================");
@@ -84,6 +101,7 @@ public class UserPrincipalService implements UserDetailsService {
             throw new UsernameNotFoundException("User Not Found");
 
     }
+
 
     public String signUpUser(UserEntity userEntity) {
         StringBuilder stringBuilder= new StringBuilder("Validates ");
