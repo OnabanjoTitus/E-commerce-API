@@ -3,7 +3,7 @@ package com.ecommerce.web.contollers;
 import com.ecommerce.data.models.BuyerRequestDto;
 import com.ecommerce.data.models.CustomerUpdateDto;
 import com.ecommerce.services.BuyerServices;
-import com.ecommerce.web.contollers.util.APIROUTES;
+import com.ecommerce.web.contollers.util.ApiRoutes;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import com.ecommerce.web.exceptions.AuthorizationException;
@@ -22,7 +22,7 @@ public class BuyerController {
     @Autowired
     BuyerServices buyerServices;
 
-    @PostMapping(APIROUTES.BUYER+"/buyerRegistration")
+    @PostMapping(ApiRoutes.BUYER+"/buyerRegistration")
     public ResponseEntity<?> createAccount(BuyerRequestDto buyerRequestDto){
            try{
                return new ResponseEntity<>( buyerServices.addAccount(buyerRequestDto), HttpStatus.OK);
@@ -31,7 +31,7 @@ public class BuyerController {
                return new ResponseEntity<>(accountCreationException.getMessage(),HttpStatus.BAD_REQUEST);
            }
     }
-    @GetMapping(APIROUTES.BUYER+"/findSellerByName")
+    @GetMapping(ApiRoutes.BUYER+"/findSellerByName")
     public ResponseEntity<?> findSellerByName(String sellerName){
         try{
 
@@ -41,7 +41,7 @@ public class BuyerController {
             return new ResponseEntity<>(accountException.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping(APIROUTES.BUYER+"/findProductByName")
+    @GetMapping(ApiRoutes.BUYER+"/findProductByName")
     public ResponseEntity<?> findProductsByName(String productName){
         try{
             return new ResponseEntity<>( buyerServices.findProductsByName(productName), HttpStatus.OK);
@@ -50,7 +50,7 @@ public class BuyerController {
             return new ResponseEntity<>(accountCreationException.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping(APIROUTES.BUYER+"/findProductsBySellerName")
+    @GetMapping(ApiRoutes.BUYER+"/findProductsBySellerName")
     public ResponseEntity<?> findProductBySellerName(String sellerName){
         try{
             return new ResponseEntity<>( buyerServices.findProductsBySellerName(sellerName), HttpStatus.OK);
@@ -59,7 +59,7 @@ public class BuyerController {
             return new ResponseEntity<>(exception.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping(APIROUTES.BUYER+"/buyerAccountUpdate")
+    @PostMapping(ApiRoutes.BUYER+"/buyerAccountUpdate")
     public ResponseEntity<?> updateAccount(@RequestHeader("Authorization")String token,CustomerUpdateDto customerUpdateDto){
         try{
 

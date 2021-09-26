@@ -3,6 +3,7 @@ package com.ecommerce.web.contollers;
 import com.ecommerce.data.models.ProductDto;
 import com.ecommerce.data.models.SellerRequestDto;
 import com.ecommerce.services.SellerServices;
+import com.ecommerce.web.contollers.util.ApiRoutes;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import com.ecommerce.web.exceptions.ProductException;
@@ -19,7 +20,7 @@ public class SellerController {
     @Autowired
     SellerServices sellerServices;
 
-    @PostMapping("/seller/sellerRegistration")
+    @PostMapping(ApiRoutes.SELLER+"/seller/sellerRegistration")
     public ResponseEntity<?> createAccount(@RequestBody SellerRequestDto sellerRequestDto){
         try{
             return new ResponseEntity<>( sellerServices.addAccount(sellerRequestDto), HttpStatus.OK);
@@ -29,7 +30,7 @@ public class SellerController {
         }
 
     }
-    @PostMapping("/productUpload")
+    @PostMapping(ApiRoutes.SELLER+"/productUpload")
     public ResponseEntity<?> uploadProduct(@RequestHeader("Authorization")String authentication, ProductDto productDto) {
         try {
             return new ResponseEntity<>(sellerServices.sellerUploadsProduct(authentication, productDto), HttpStatus.OK);
