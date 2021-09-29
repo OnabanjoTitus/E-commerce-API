@@ -3,10 +3,6 @@ package com.ecommerce.data.models;
 import lombok.Data;
 
 
-import javax.persistence.Column;
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 public class SellerDto {
 
