@@ -1,8 +1,9 @@
 package com.ecommerce.services;
 
 import com.ecommerce.data.models.*;
-import com.ecommerce.data.repository.BuyerRepository;
 import com.ecommerce.data.repository.SellerRepository;
+import com.ecommerce.dtos.SellerDto;
+import com.ecommerce.dtos.SellerRequestDto;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 class SellerServicesImplTest {
 

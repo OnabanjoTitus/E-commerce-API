@@ -1,6 +1,9 @@
 package com.ecommerce.services;
 
 import com.ecommerce.data.models.*;
+import com.ecommerce.dtos.ProductDto;
+import com.ecommerce.dtos.SellerDto;
+import com.ecommerce.dtos.SellerRequestDto;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import com.ecommerce.web.exceptions.ProductException;

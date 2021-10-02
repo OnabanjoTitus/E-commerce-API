@@ -1,6 +1,10 @@
 package com.ecommerce.services;
 
 import com.ecommerce.data.models.*;
+import com.ecommerce.dtos.BuyerDto;
+import com.ecommerce.dtos.BuyerRequestDto;
+import com.ecommerce.dtos.CustomerUpdateDto;
+import com.ecommerce.dtos.SellerDto;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import com.ecommerce.web.exceptions.AuthorizationException;
@@ -14,5 +18,5 @@ public interface BuyerServices {
     List<SellerDto> findSellerByName(String sellerName) throws AccountException;
     List<ProductRequest> findProductsByName(String productName) throws ProductException;
     List<ProductRequest> findProductsBySellerName(String sellerName) throws ProductException, AccountException;
-    CustomerUpdateDto updateAccount(String authentication,CustomerUpdateDto customerUpdateDto) throws AccountException, AuthorizationException;
+    CustomerUpdateDto updateAccount(String authentication, CustomerUpdateDto customerUpdateDto) throws AccountException, AuthorizationException;
 }

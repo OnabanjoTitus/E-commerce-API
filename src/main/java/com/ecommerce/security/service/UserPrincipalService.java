@@ -2,7 +2,7 @@ package com.ecommerce.security.service;
 
 import com.ecommerce.data.models.Buyer;
 import com.ecommerce.data.models.Seller;
-import com.ecommerce.data.models.UserLoginDto;
+import com.ecommerce.dtos.UserLoginDto;
 import com.ecommerce.data.repository.BuyerRepository;
 import com.ecommerce.data.repository.SellerRepository;
 import com.ecommerce.security.exceptions.IncorrectPasswordException;

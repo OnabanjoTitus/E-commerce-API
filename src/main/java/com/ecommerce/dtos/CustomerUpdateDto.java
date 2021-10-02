@@ -1,5 +1,6 @@
-package com.ecommerce.data.models;
+package com.ecommerce.dtos;
 
+import com.ecommerce.data.models.Role;
 import lombok.Data;
 
 @Data

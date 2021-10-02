@@ -4,6 +4,10 @@ import com.ecommerce.data.models.*;
 import com.ecommerce.data.repository.BuyerRepository;
 import com.ecommerce.data.repository.ProductRepository;
 import com.ecommerce.data.repository.SellerRepository;
+import com.ecommerce.dtos.BuyerDto;
+import com.ecommerce.dtos.BuyerRequestDto;
+import com.ecommerce.dtos.CustomerUpdateDto;
+import com.ecommerce.dtos.SellerDto;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import com.ecommerce.web.exceptions.AuthorizationException;
@@ -101,7 +105,7 @@ public class BuyerServicesImpl implements BuyerServices {
     }
 
     @Override
-    public CustomerUpdateDto updateAccount(String token,CustomerUpdateDto customerUpdateDto) throws AccountException, AuthorizationException {
+    public CustomerUpdateDto updateAccount(String token, CustomerUpdateDto customerUpdateDto) throws AccountException, AuthorizationException {
         if(token.isBlank()){
             throw new AuthorizationException("User token cannot be empty");
         }

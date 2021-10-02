@@ -1,7 +1,7 @@
 package com.ecommerce.web.contollers;
 
-import com.ecommerce.data.models.BuyerRequestDto;
-import com.ecommerce.data.models.CustomerUpdateDto;
+import com.ecommerce.dtos.BuyerRequestDto;
+import com.ecommerce.dtos.CustomerUpdateDto;
 import com.ecommerce.services.BuyerServices;
 import com.ecommerce.web.contollers.util.ApiRoutes;
 import com.ecommerce.web.exceptions.AccountCreationException;
