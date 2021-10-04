@@ -9,6 +9,7 @@ import com.ecommerce.dtos.SellerDto;
 import com.ecommerce.dtos.SellerRequestDto;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
+import com.ecommerce.web.exceptions.ProductException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,8 +70,10 @@ class BuyerServicesImplTest {
     }
 
     @Test
-    void findProductsByName() throws AccountCreationException {
-       //Todo:Complete test
+    void findProductsByName() throws AccountCreationException, ProductException {
+    List<ProductRequest>productList= buyerServices.findProductsByName("jein");
+    assertThat(productList).isEmpty();
+    //Todo
     }
 
     @Test

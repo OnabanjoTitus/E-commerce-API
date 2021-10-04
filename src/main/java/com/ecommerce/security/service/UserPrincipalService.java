@@ -75,17 +75,16 @@ public class UserPrincipalService implements UserDetailsService {
                throw new AccountException("Invalid account type");
        }
 
-        if(userEntity.isPresent()){
-        log.info(userEntity.get().getPassword() + " user password ==================================");
-        log.info(passwordEncoder.encode(userLoginDTO.getPassword()) + " encoded dto password ++++++++++++++++++++++++++++++++++");
-        boolean matchingResult=passwordEncoder.matches(userLoginDTO.getPassword(),passwordEncoder.encode( userEntity.get().getPassword()));
+        log.info(userEntity.getPassword() + " user password ==================================");
+        log.info(passwordEncoder.encode(userLoginDto.getPassword()) + " encoded dto password ++++++++++++++++++++++++++++++++++");
+        boolean matchingResult=passwordEncoder.matches(userLoginDto.getPassword(),passwordEncoder.encode( userEntity.getPassword()));
         log.info(String.valueOf(matchingResult));
-            if(!matchingResult){
-            throw new IncorrectPasswordException("The password is Incorrect");
-        }
+        if(!matchingResult){
+        throw new IncorrectPasswordException("The password is Incorrect");
+    }
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                      userLoginDTO.getEmail(), userLoginDTO.getPassword()
+                      userLoginDto.getEmailAddress(), userLoginDto.getPassword()
                 )
         );
         log.info("after authentication");
@@ -97,8 +96,6 @@ public class UserPrincipalService implements UserDetailsService {
 
         log.info("JWT object -> {}", jwtToken.toString());
         return jwtToken;
-        }
-            throw new UsernameNotFoundException("User Not Found");
 
     }
 
