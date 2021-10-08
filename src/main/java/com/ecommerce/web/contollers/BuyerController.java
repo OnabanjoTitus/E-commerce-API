@@ -1,7 +1,9 @@
 package com.ecommerce.web.contollers;
 
+import com.ecommerce.data.models.Role;
 import com.ecommerce.dtos.BuyerRequestDto;
 import com.ecommerce.dtos.CustomerUpdateDto;
+import com.ecommerce.dtos.UserLoginDto;
 import com.ecommerce.services.BuyerServices;
 import com.ecommerce.web.contollers.util.ApiRoutes;
 import com.ecommerce.web.exceptions.AccountCreationException;
@@ -22,6 +24,16 @@ public class BuyerController {
     @Autowired
     BuyerServices buyerServices;
 
+    @PostMapping(ApiRoutes.BUYER+"/buyerlogin")
+    public  ResponseEntity<?>buyerLogin(UserLoginDto userLoginDto){
+        try{
+            userLoginDto.setRole(Role.BUYER);
+        return new ResponseEntity<>(buyerServices.Buyerlogin(userLoginDto),HttpStatus.OK);
+        }
+        catch (AccountException accountException){
+            return new ResponseEntity<>(accountException.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
     @PostMapping(ApiRoutes.BUYER+"/buyerRegistration")
     public ResponseEntity<?> createAccount(BuyerRequestDto buyerRequestDto){
            try{

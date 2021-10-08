@@ -1,10 +1,9 @@
 package com.ecommerce.services;
 
 import com.ecommerce.data.models.*;
-import com.ecommerce.dtos.BuyerDto;
-import com.ecommerce.dtos.BuyerRequestDto;
-import com.ecommerce.dtos.CustomerUpdateDto;
-import com.ecommerce.dtos.SellerDto;
+import com.ecommerce.dtos.*;
+import com.ecommerce.security.exceptions.IncorrectPasswordException;
+import com.ecommerce.security.security.JWTToken;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import com.ecommerce.web.exceptions.AuthorizationException;
@@ -17,6 +16,7 @@ public interface BuyerServices {
     BuyerDto addAccount(BuyerRequestDto buyerRequestDto) throws AccountCreationException;
     List<SellerDto> findSellerByName(String sellerName) throws AccountException;
     List<ProductRequest> findProductsByName(String productName) throws ProductException;
+    JWTToken Buyerlogin(UserLoginDto userLoginDTO) throws AuthorizationException, IncorrectPasswordException, javax.security.auth.login.AccountException;
     List<ProductRequest> findProductsBySellerName(String sellerName) throws ProductException, AccountException;
     CustomerUpdateDto updateAccount(String authentication, CustomerUpdateDto customerUpdateDto) throws AccountException, AuthorizationException;
 }

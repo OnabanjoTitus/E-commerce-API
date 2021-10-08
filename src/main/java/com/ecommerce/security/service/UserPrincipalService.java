@@ -44,7 +44,7 @@ public class UserPrincipalService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("Check this email " + username);
         Optional<Seller>optionalSeller = Optional.empty();
-        Optional<Buyer> optionalBuyer=Optional.empty();
+        Optional<Buyer> optionalBuyer;
 
          optionalBuyer= buyerRepository.findBuyerByBuyerEmailAddress(username);
         if(optionalBuyer.isEmpty()){

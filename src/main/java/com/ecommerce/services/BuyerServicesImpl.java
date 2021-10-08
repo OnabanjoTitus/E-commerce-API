@@ -4,10 +4,10 @@ import com.ecommerce.data.models.*;
 import com.ecommerce.data.repository.BuyerRepository;
 import com.ecommerce.data.repository.ProductRepository;
 import com.ecommerce.data.repository.SellerRepository;
-import com.ecommerce.dtos.BuyerDto;
-import com.ecommerce.dtos.BuyerRequestDto;
-import com.ecommerce.dtos.CustomerUpdateDto;
-import com.ecommerce.dtos.SellerDto;
+import com.ecommerce.dtos.*;
+import com.ecommerce.security.exceptions.IncorrectPasswordException;
+import com.ecommerce.security.security.JWTToken;
+import com.ecommerce.security.service.UserPrincipalService;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import com.ecommerce.web.exceptions.AuthorizationException;
@@ -32,6 +32,9 @@ public class BuyerServicesImpl implements BuyerServices {
     ProductRepository productRepository;
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    UserPrincipalService userPrincipalService;
 
     @Override
     public BuyerDto addAccount(BuyerRequestDto buyerRequestDto) throws AccountCreationException {
@@ -89,6 +92,12 @@ public class BuyerServicesImpl implements BuyerServices {
             throw new ProductException("We do not have product with the name "+productName+" in our records");
         }
         return productRequestList;
+    }
+
+    @Override
+    public JWTToken Buyerlogin(UserLoginDto userLoginDTO) throws IncorrectPasswordException {
+
+        return userPrincipalService.loginUser(userLoginDTO);
     }
 
     @Override
