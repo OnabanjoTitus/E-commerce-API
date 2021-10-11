@@ -95,7 +95,7 @@ public class BuyerServicesImpl implements BuyerServices {
     }
 
     @Override
-    public JWTToken Buyerlogin(UserLoginDto userLoginDTO) throws IncorrectPasswordException {
+    public JWTToken Buyerlogin(UserLoginDto userLoginDTO) throws IncorrectPasswordException, javax.security.auth.login.AccountException {
 
         return userPrincipalService.loginUser(userLoginDTO);
     }

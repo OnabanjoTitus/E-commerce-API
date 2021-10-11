@@ -4,6 +4,7 @@ import com.ecommerce.data.models.Role;
 import com.ecommerce.dtos.BuyerRequestDto;
 import com.ecommerce.dtos.CustomerUpdateDto;
 import com.ecommerce.dtos.UserLoginDto;
+import com.ecommerce.security.exceptions.IncorrectPasswordException;
 import com.ecommerce.services.BuyerServices;
 import com.ecommerce.web.contollers.util.ApiRoutes;
 import com.ecommerce.web.exceptions.AccountCreationException;
@@ -30,7 +31,7 @@ public class BuyerController {
             userLoginDto.setRole(Role.BUYER);
         return new ResponseEntity<>(buyerServices.Buyerlogin(userLoginDto),HttpStatus.OK);
         }
-        catch (AccountException accountException){
+        catch (AuthorizationException | IncorrectPasswordException | javax.security.auth.login.AccountException accountException){
             return new ResponseEntity<>(accountException.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }

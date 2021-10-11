@@ -62,13 +62,15 @@ public class UserPrincipalService implements UserDetailsService {
        UserDetails userEntity = loadUserByUsername(userLoginDto.getEmailAddress());
        String role=userEntity.getAuthorities().toString();
        log.info("The role is -->{}",role);
+        Seller seller = new Seller();
+        Buyer buyer = new Buyer();
        switch (role){
            case "Seller":
-               Seller seller=sellerRepository.findSellerBySellerEmailAddress(userLoginDto.getEmailAddress())
+                seller=sellerRepository.findSellerBySellerEmailAddress(userLoginDto.getEmailAddress())
                        .orElseThrow(()-> new UsernameNotFoundException("User with this email is not found"));
                 break;
            case "Buyer":
-               Buyer buyer=buyerRepository.findBuyerByBuyerEmailAddress(userLoginDto.getEmailAddress())
+                buyer=buyerRepository.findBuyerByBuyerEmailAddress(userLoginDto.getEmailAddress())
                        .orElseThrow(()-> new UsernameNotFoundException("User with this email is not found"));
                break;
            default:
@@ -90,9 +92,17 @@ public class UserPrincipalService implements UserDetailsService {
         log.info("after authentication");
         log.info("security context authentication");
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        userEntity = userRepository.findUserByEmail(userLoginDTO.getEmail());
-
-        JWTToken jwtToken = new JWTToken(tokenProviderService.generateLoginToken(authentication, userEntity.get()));
+        JWTToken jwtToken;
+        switch (role){
+            case "Seller":
+                jwtToken = new JWTToken(tokenProviderService.generateLoginToken(authentication,seller));
+                break;
+            case "Buyer":
+                jwtToken = new JWTToken(tokenProviderService.generateLoginToken(authentication,buyer));
+               break;
+            default:
+                throw new AccountException("Invalid account type");
+        }
 
         log.info("JWT object -> {}", jwtToken.toString());
         return jwtToken;
