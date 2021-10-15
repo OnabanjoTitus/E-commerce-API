@@ -1,6 +1,7 @@
 package com.ecommerce.security.config;
 
 
+import com.ecommerce.web.contollers.util.ApiRoutes;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,7 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable().
                 authorizeRequests()
-                .antMatchers("/api/v1/customer/buyer/***","/api/v1/customer/seller/***")
+                .antMatchers(ApiRoutes.CUSTOMERS+"/buyer/***",ApiRoutes.CUSTOMERS+"/seller/***")
                 .permitAll()
                 .anyRequest()
                 .authenticated().and()
