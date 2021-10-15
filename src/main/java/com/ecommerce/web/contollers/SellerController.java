@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/customer")
+@RequestMapping(ApiRoutes.CUSTOMERS)
 @Slf4j
 public class SellerController {
     @Autowired

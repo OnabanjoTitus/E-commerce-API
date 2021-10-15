@@ -166,6 +166,11 @@ public class SellerServicesImpl  implements SellerServices{
         return userPrincipalService.loginUser(userLoginDTO);
     }
 
+    @Override
+    public CustomerUpdateDto updateAccount(String authentication, CustomerUpdateDto customerUpdateDto) throws AccountException, AuthorizationException {
+        return null;
+    }
+
     private String extractFileName(String fileName){
         return fileName.split("\\.")[0];
     }
