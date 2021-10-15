@@ -25,11 +25,11 @@ public class BuyerController {
     @Autowired
     BuyerServices buyerServices;
 
-    @PostMapping(ApiRoutes.BUYER+"/buyerlogin")
+    @PostMapping(ApiRoutes.BUYER+"/buyerLogin")
     public  ResponseEntity<?>buyerLogin(UserLoginDto userLoginDto){
         try{
             userLoginDto.setRole(Role.BUYER);
-        return new ResponseEntity<>(buyerServices.Buyerlogin(userLoginDto),HttpStatus.OK);
+        return new ResponseEntity<>(buyerServices.buyerLogin(userLoginDto),HttpStatus.OK);
         }
         catch (AuthorizationException | IncorrectPasswordException | javax.security.auth.login.AccountException accountException){
             return new ResponseEntity<>(accountException.getMessage(),HttpStatus.BAD_REQUEST);

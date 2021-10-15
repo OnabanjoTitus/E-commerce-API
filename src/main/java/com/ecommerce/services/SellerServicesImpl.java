@@ -4,12 +4,14 @@ import com.ecommerce.data.models.*;
 import com.ecommerce.data.repository.BuyerRepository;
 import com.ecommerce.data.repository.ProductRepository;
 import com.ecommerce.data.repository.SellerRepository;
-import com.ecommerce.dtos.ProductDto;
-import com.ecommerce.dtos.SellerDto;
-import com.ecommerce.dtos.SellerRequestDto;
+import com.ecommerce.dtos.*;
+import com.ecommerce.security.exceptions.IncorrectPasswordException;
+import com.ecommerce.security.security.JWTToken;
+import com.ecommerce.security.service.UserPrincipalService;
 import com.ecommerce.services.cloud.CloudStorageService;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
+import com.ecommerce.web.exceptions.AuthorizationException;
 import com.ecommerce.web.exceptions.ProductException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -38,6 +40,9 @@ public class SellerServicesImpl  implements SellerServices{
     ModelMapper modelMapper;
 
     @Autowired
+    UserPrincipalService userPrincipalService;
+
+    @Autowired
     CloudStorageService cloudStorageService;
 
     @Override
@@ -55,11 +60,16 @@ public class SellerServicesImpl  implements SellerServices{
         if(buyerRepository.findBuyerByBuyerEmailAddress(sellerRequestDto.getSellerEmailAddress()).isPresent()){
             throw new AccountCreationException("Customer is already a buyer, you cannot have multiple accounts with the same email");
         }
+
+
         Seller seller= new Seller();
         seller.setRole(Role.SELLER);
         modelMapper.map(sellerRequestDto,seller);
         log.info("The seller before saving is -->{}",seller);
-        sellerRepository.save(seller);
+        String token=userPrincipalService.signUpUser(seller);
+        if(token.isBlank()||token.isEmpty()){
+            throw new AccountCreationException("Error creating seller's account");
+        }
         SellerDto sellerDto= new SellerDto(sellerRequestDto.getSellerEmailAddress(),sellerRequestDto.getSellerName(),sellerRequestDto.getSellerLocation());
         return sellerDto;
     }
@@ -150,6 +160,12 @@ public class SellerServicesImpl  implements SellerServices{
 
         return null;
     }
+
+    @Override
+    public JWTToken sellerLogin(UserLoginDto userLoginDTO) throws AuthorizationException, IncorrectPasswordException, javax.security.auth.login.AccountException {
+        return userPrincipalService.loginUser(userLoginDTO);
+    }
+
     private String extractFileName(String fileName){
         return fileName.split("\\.")[0];
     }

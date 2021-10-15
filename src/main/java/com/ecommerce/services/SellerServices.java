@@ -4,8 +4,12 @@ import com.ecommerce.data.models.*;
 import com.ecommerce.dtos.ProductDto;
 import com.ecommerce.dtos.SellerDto;
 import com.ecommerce.dtos.SellerRequestDto;
+import com.ecommerce.dtos.UserLoginDto;
+import com.ecommerce.security.exceptions.IncorrectPasswordException;
+import com.ecommerce.security.security.JWTToken;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
+import com.ecommerce.web.exceptions.AuthorizationException;
 import com.ecommerce.web.exceptions.ProductException;
 
 import java.util.List;
@@ -17,4 +21,5 @@ public interface SellerServices {
     List<ProductRequest> findProductsByName(String productName) throws ProductException;
     List<ProductRequest> findProductsBySellerName(String sellerName) throws ProductException, AccountException;
     Product sellerUploadsProduct(String loginToken, ProductDto productDto) throws AccountException, ProductException;
+    JWTToken sellerLogin(UserLoginDto userLoginDTO) throws AuthorizationException, IncorrectPasswordException, javax.security.auth.login.AccountException;
 }

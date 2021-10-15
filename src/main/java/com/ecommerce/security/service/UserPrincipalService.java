@@ -110,18 +110,34 @@ public class UserPrincipalService implements UserDetailsService {
     }
 
 
-    public String signUpUser(UserEntity userEntity) {
-        StringBuilder stringBuilder= new StringBuilder("Validates ");
-        boolean userExists=userRepository.findUserByEmail(userEntity.getEmail()).isPresent();
+    public String signUpUser(Buyer buyer) {
+        StringBuilder stringBuilder= new StringBuilder("Validates-Buyer");
+        boolean userExists=buyerRepository.findBuyerByBuyerEmailAddress(buyer.getBuyerEmailAddress()).isPresent();
+        userExists=sellerRepository.findAllSellerBySellerName(buyer.getBuyerEmailAddress()).isPresent();
         if(userExists){
             throw new IllegalStateException("user with this email already exists");
         }
-        userRepository.save(userEntity);
-        String encodedPassword=passwordEncoder.encode(userEntity.getPassword());
-        userEntity.setPassword(encodedPassword);
-        String token= UUID.randomUUID().toString();
 
+        String encodedPassword=passwordEncoder.encode(buyer.getBuyerPassword());
+        buyer.setBuyerPassword(encodedPassword);
+        String token= UUID.randomUUID().toString();
         stringBuilder.append(token);
+        buyerRepository.save(buyer);
         return stringBuilder.toString();
     }
+    public String signUpUser(Seller seller) {
+        StringBuilder stringBuilder= new StringBuilder("Validates-Seller");
+        boolean userExists=buyerRepository.findBuyerByBuyerEmailAddress(seller.getSellerEmailAddress()).isPresent();
+        userExists=sellerRepository.findSellerBySellerEmailAddress(seller.getSellerEmailAddress()).isPresent();
+        if(userExists){
+            throw new IllegalStateException("user with this email already exists");
+        }
+        String encodedPassword=passwordEncoder.encode(seller.getSellerPassword());
+        seller.setSellerPassword(encodedPassword);
+        String token= UUID.randomUUID().toString();
+        stringBuilder.append(token);
+        sellerRepository.save(seller);
+        return stringBuilder.toString();
+    }
+
 }

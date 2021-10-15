@@ -55,8 +55,11 @@ public class BuyerServicesImpl implements BuyerServices {
         Buyer buyer= new Buyer();
         buyer.setRole(Role.BUYER);
         modelMapper.map(buyerRequestDto,buyer);
-        log.info("The buyer before saving is -->{}",buyer);
-        buyerRepository.save(buyer);
+        log.info("The new buyer ---->{}",buyer);
+        String token=userPrincipalService.signUpUser(buyer);
+        if(token.isBlank()||token.isEmpty()){
+            throw new AccountCreationException("Error creating buyer's account");
+        }
         BuyerDto buyerDto= new BuyerDto(buyerRequestDto.getBuyerEmailAddress());
         return buyerDto ;
     }
@@ -95,7 +98,7 @@ public class BuyerServicesImpl implements BuyerServices {
     }
 
     @Override
-    public JWTToken Buyerlogin(UserLoginDto userLoginDTO) throws IncorrectPasswordException, javax.security.auth.login.AccountException {
+    public JWTToken buyerLogin(UserLoginDto userLoginDTO) throws IncorrectPasswordException, javax.security.auth.login.AccountException {
 
         return userPrincipalService.loginUser(userLoginDTO);
     }

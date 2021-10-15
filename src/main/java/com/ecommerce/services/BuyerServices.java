@@ -16,7 +16,7 @@ public interface BuyerServices {
     BuyerDto addAccount(BuyerRequestDto buyerRequestDto) throws AccountCreationException;
     List<SellerDto> findSellerByName(String sellerName) throws AccountException;
     List<ProductRequest> findProductsByName(String productName) throws ProductException;
-    JWTToken Buyerlogin(UserLoginDto userLoginDTO) throws AuthorizationException, IncorrectPasswordException, javax.security.auth.login.AccountException;
+    JWTToken buyerLogin(UserLoginDto userLoginDTO) throws AuthorizationException, IncorrectPasswordException, javax.security.auth.login.AccountException;
     List<ProductRequest> findProductsBySellerName(String sellerName) throws ProductException, AccountException;
     CustomerUpdateDto updateAccount(String authentication, CustomerUpdateDto customerUpdateDto) throws AccountException, AuthorizationException;
 }

@@ -1,11 +1,15 @@
 package com.ecommerce.web.contollers;
 
+import com.ecommerce.data.models.Role;
 import com.ecommerce.dtos.ProductDto;
 import com.ecommerce.dtos.SellerRequestDto;
+import com.ecommerce.dtos.UserLoginDto;
+import com.ecommerce.security.exceptions.IncorrectPasswordException;
 import com.ecommerce.services.SellerServices;
 import com.ecommerce.web.contollers.util.ApiRoutes;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
+import com.ecommerce.web.exceptions.AuthorizationException;
 import com.ecommerce.web.exceptions.ProductException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +41,17 @@ public class SellerController {
         } catch (ProductException | AccountException exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 
+        }
+    }
+
+    @PostMapping(ApiRoutes.SELLER+"/sellerLogin")
+    public  ResponseEntity<?>buyerLogin(UserLoginDto userLoginDto){
+        try{
+            userLoginDto.setRole(Role.SELLER);
+            return new ResponseEntity<>(sellerServices.sellerLogin(userLoginDto),HttpStatus.OK);
+        }
+        catch (AuthorizationException | IncorrectPasswordException | javax.security.auth.login.AccountException accountException){
+            return new ResponseEntity<>(accountException.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 
