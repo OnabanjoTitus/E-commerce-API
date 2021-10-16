@@ -11,11 +11,17 @@ import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import com.ecommerce.web.exceptions.AuthorizationException;
 import com.ecommerce.web.exceptions.ProductException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.xml.bind.DatatypeConverter;
+
+import static com.ecommerce.security.security.SecurityConstants.SIGNING_KEY_STRING;
 
 @RestController
 @RequestMapping(ApiRoutes.CUSTOMERS)
@@ -77,7 +83,6 @@ public class BuyerController {
     @PostMapping(ApiRoutes.BUYER+"/buyerAccountUpdate")
     public ResponseEntity<?> updateAccount(@RequestHeader("Authorization")String token,@RequestBody CustomerUpdateDto customerUpdateDto){
         try{
-
             return new ResponseEntity<>( buyerServices.updateAccount(token,customerUpdateDto), HttpStatus.OK);
         }
         catch (AccountException | AuthorizationException exception){

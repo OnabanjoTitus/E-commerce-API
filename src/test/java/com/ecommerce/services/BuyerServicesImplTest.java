@@ -70,6 +70,7 @@ class BuyerServicesImplTest {
     }
 
     @Test
+    @Transactional
     void findProductsByName() throws AccountCreationException, ProductException {
     List<ProductRequest>productList= buyerServices.findProductsByName("jein");
     assertThat(productList).isEmpty();
@@ -77,11 +78,13 @@ class BuyerServicesImplTest {
     }
 
     @Test
+    @Transactional
     void findProductsBySellerName() {
         //Todo more tests
     }
 
     @Test
+    @Transactional
     void updateAccount() {
         //Todo more tests
     }

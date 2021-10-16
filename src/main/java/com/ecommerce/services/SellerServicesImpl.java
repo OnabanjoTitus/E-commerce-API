@@ -17,10 +17,12 @@ import com.ecommerce.web.exceptions.ProductException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,7 +128,7 @@ public class SellerServicesImpl  implements SellerServices{
     }
 
     @Override
-    public Product sellerUploadsProduct(String loginToken, ProductDto productDto) throws AccountException, ProductException {
+    public Product sellerUploadsProduct(String loginToken, ProductDto productDto) throws AccountException, ProductException, AuthorizationException {
         if(loginToken.isBlank()){
             throw new AccountException("Login Token cannot be empty");
         }
@@ -145,10 +147,7 @@ public class SellerServicesImpl  implements SellerServices{
         if(productDto.getProductImage().isEmpty()){
             throw new ProductException("Product image cannot be empty");
         }
-        //Todo : find seller by token and upload a product
-        //product will have the seller
-        //And the seller will also have the product
-
+        String sellerEmail=userPrincipalService.getUserEmailAddressFromToken(loginToken);
         Product product= new Product();
         if(productDto.getProductImage()!=null && !productDto.getProductImage().isEmpty()){
             Map<Object,Object> params=new HashMap<>();
@@ -163,9 +162,18 @@ public class SellerServicesImpl  implements SellerServices{
             }
 
         }
+        product.setProductCategory(productDto.getProductCategory());
+        product.setProductDescription(productDto.getProductDescription());
+        product.setProductName(productDto.getProductName());
+        product.setProductPrice(BigDecimal.valueOf(productDto.getProductPrice()));
+        Seller seller=sellerRepository.findSellerBySellerEmailAddress(sellerEmail)
+                .orElseThrow(()->new UsernameNotFoundException("Seller with this email is not found"));
+        product.setSeller(seller);
+        productRepository.save(product);
+        seller.getProducts().add(product);
+        sellerRepository.save(seller);
 
-
-        return null;
+        return product;
     }
 
     @Override

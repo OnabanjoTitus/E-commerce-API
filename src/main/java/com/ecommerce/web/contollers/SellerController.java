@@ -1,6 +1,7 @@
 package com.ecommerce.web.contollers;
 
 import com.ecommerce.data.models.Role;
+import com.ecommerce.dtos.CustomerUpdateDto;
 import com.ecommerce.dtos.ProductDto;
 import com.ecommerce.dtos.SellerRequestDto;
 import com.ecommerce.dtos.UserLoginDto;
@@ -38,9 +39,38 @@ public class SellerController {
     public ResponseEntity<?> uploadProduct(@RequestHeader("Authorization")String authentication,@RequestBody ProductDto productDto) {
         try {
             return new ResponseEntity<>(sellerServices.sellerUploadsProduct(authentication, productDto), HttpStatus.OK);
-        } catch (ProductException | AccountException exception) {
+        } catch (ProductException | AccountException | AuthorizationException exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 
+        }
+    }
+    @GetMapping(ApiRoutes.SELLER+"/findSellerByName")
+    public ResponseEntity<?> findSellerByName(@RequestBody String sellerName){
+        try{
+
+            return new ResponseEntity<>( sellerServices.findSellerByName(sellerName), HttpStatus.OK);
+        }
+        catch (AccountException accountException){
+            return new ResponseEntity<>(accountException.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(ApiRoutes.SELLER+"/findProductByName")
+    public ResponseEntity<?> findProductsByName(@RequestBody String productName){
+        try{
+            return new ResponseEntity<>( sellerServices.findProductsByName(productName), HttpStatus.OK);
+        }
+        catch (ProductException accountCreationException){
+            return new ResponseEntity<>(accountCreationException.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping(ApiRoutes.SELLER+"/findProductsBySellerName")
+    public ResponseEntity<?> findProductBySellerName(@RequestBody String sellerName){
+        try{
+            return new ResponseEntity<>( sellerServices.findProductsBySellerName(sellerName), HttpStatus.OK);
+        }
+        catch (ProductException | AccountException exception){
+            return new ResponseEntity<>(exception.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -52,6 +82,15 @@ public class SellerController {
         }
         catch (AuthorizationException | IncorrectPasswordException | javax.security.auth.login.AccountException accountException){
             return new ResponseEntity<>(accountException.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping(ApiRoutes.SELLER+"/buyerAccountUpdate")
+    public ResponseEntity<?> updateAccount(@RequestHeader("Authorization")String token,@RequestBody CustomerUpdateDto customerUpdateDto){
+        try{
+            return new ResponseEntity<>(sellerServices.updateAccount(token,customerUpdateDto), HttpStatus.OK);
+        }
+        catch (AccountException | AuthorizationException exception){
+            return new ResponseEntity<>(exception.getMessage(),  HttpStatus.BAD_REQUEST);
         }
     }
 

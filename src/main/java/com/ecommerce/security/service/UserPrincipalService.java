@@ -8,6 +8,9 @@ import com.ecommerce.data.repository.SellerRepository;
 import com.ecommerce.security.exceptions.IncorrectPasswordException;
 import com.ecommerce.security.security.JWTToken;
 import com.ecommerce.web.exceptions.AccountCreationException;
+import com.ecommerce.web.exceptions.AuthorizationException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountException;
+import javax.xml.bind.DatatypeConverter;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,7 +34,7 @@ public class UserPrincipalService implements UserDetailsService {
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
-    TokenProviderServiceImpl tokenProviderService;
+    TokenProviderService tokenProviderService;
 
 
 
@@ -135,6 +139,10 @@ public class UserPrincipalService implements UserDetailsService {
         stringBuilder.append(token);
         sellerRepository.save(seller);
         return stringBuilder.toString();
+    }
+
+    public String getUserEmailAddressFromToken(String token) throws AuthorizationException {
+        return tokenProviderService.getUserEmailFromToken(token);
     }
 
 }
