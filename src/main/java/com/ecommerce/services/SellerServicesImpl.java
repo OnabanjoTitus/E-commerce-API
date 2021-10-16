@@ -195,7 +195,8 @@ public class SellerServicesImpl  implements SellerServices{
         if(customerUpdateDto.getNewPassword().isBlank()){
             throw new AccountException("Customer password cannot be blank, please enter a valid password");
         }
-        Seller seller= sellerRepository.findSellerBySellerEmailAddress(customerUpdateDto.getEmailAddress()).orElseThrow(
+        String sellerEmail=userPrincipalService.getUserEmailAddressFromToken(authentication);
+        Seller seller= sellerRepository.findSellerBySellerEmailAddress(sellerEmail).orElseThrow(
                 () -> new AccountException("Customer With this email does not exist"));
         if(!passwordEncoder.matches(customerUpdateDto.getPreviousPassword(), seller.getSellerPassword())){
             throw new AccountException("Password is incorrect account cannot be updated");

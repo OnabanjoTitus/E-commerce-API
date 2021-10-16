@@ -25,7 +25,7 @@ public class SellerController {
     @Autowired
     SellerServices sellerServices;
 
-    @PostMapping(ApiRoutes.SELLER+"/seller/sellerRegistration")
+    @PostMapping(ApiRoutes.SELLER+"/sellerRegistration")
     public ResponseEntity<?> createAccount(@RequestBody SellerRequestDto sellerRequestDto){
         try{
             return new ResponseEntity<>( sellerServices.addAccount(sellerRequestDto), HttpStatus.OK);
@@ -84,7 +84,7 @@ public class SellerController {
             return new ResponseEntity<>(accountException.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping(ApiRoutes.SELLER+"/buyerAccountUpdate")
+    @PostMapping(ApiRoutes.SELLER+"/sellerAccountUpdate")
     public ResponseEntity<?> updateAccount(@RequestHeader("Authorization")String token,@RequestBody CustomerUpdateDto customerUpdateDto){
         try{
             return new ResponseEntity<>(sellerServices.updateAccount(token,customerUpdateDto), HttpStatus.OK);

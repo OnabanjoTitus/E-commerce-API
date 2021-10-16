@@ -135,7 +135,9 @@ public class BuyerServicesImpl implements BuyerServices {
         if(customerUpdateDto.getNewPassword().isBlank()){
             throw new AccountException("Customer password cannot be blank, please enter a valid password");
         }
-        Buyer buyer= buyerRepository.findBuyerByBuyerEmailAddress(customerUpdateDto.getEmailAddress()).orElseThrow(
+        String email=userPrincipalService.getUserEmailAddressFromToken(token);
+        log.info("email from token-->{}",email);
+        Buyer buyer= buyerRepository.findBuyerByBuyerEmailAddress(email).orElseThrow(
                 () -> new AccountException("Customer With this email does not exist"));
         if(!passwordEncoder.matches(customerUpdateDto.getPreviousPassword(), buyer.getBuyerPassword())){
             throw new AccountException("Password is incorrect account cannot be updated");
