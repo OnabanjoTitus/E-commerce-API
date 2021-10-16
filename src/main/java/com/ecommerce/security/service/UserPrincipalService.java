@@ -6,14 +6,10 @@ import com.ecommerce.dtos.UserLoginDto;
 import com.ecommerce.data.repository.BuyerRepository;
 import com.ecommerce.data.repository.SellerRepository;
 import com.ecommerce.security.exceptions.IncorrectPasswordException;
-import com.ecommerce.security.security.AppAuthenticationProvider;
 import com.ecommerce.security.security.JWTToken;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,9 +29,6 @@ public class UserPrincipalService implements UserDetailsService {
     SellerRepository sellerRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
-    @Autowired
-    private AppAuthenticationProvider authenticationManager;
-
     @Autowired
     TokenProviderServiceImpl tokenProviderService;
 
@@ -105,6 +98,7 @@ public class UserPrincipalService implements UserDetailsService {
         return jwtToken;
 
     }
+
 
 
     public String signUpUser(Buyer buyer) throws AccountCreationException {

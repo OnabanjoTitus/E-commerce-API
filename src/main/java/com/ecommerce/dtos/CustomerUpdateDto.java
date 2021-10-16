@@ -9,4 +9,5 @@ public class CustomerUpdateDto {
     private String previousPassword;
     private String newPassword;
     private Role role;
+    private String location;
 }

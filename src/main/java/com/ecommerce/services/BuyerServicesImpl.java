@@ -16,6 +16,7 @@ import com.ecommerce.web.exceptions.ProductException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +35,8 @@ public class BuyerServicesImpl implements BuyerServices {
     ProductRepository productRepository;
     @Autowired
     ModelMapper modelMapper;
-
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @Autowired
     UserPrincipalService userPrincipalService;
 
@@ -124,7 +126,6 @@ public class BuyerServicesImpl implements BuyerServices {
         if(token.isBlank()){
             throw new AuthorizationException("User token cannot be empty");
         }
-        //todo:this guy gets the userUniqueToken = tokenProviderService.getEmailFromToken(userToken);
         if(customerUpdateDto.getEmailAddress().isBlank()){
             throw new AccountException("Customer email address cannot be blank, please enter a valid email address ");
         }
@@ -134,13 +135,13 @@ public class BuyerServicesImpl implements BuyerServices {
         if(customerUpdateDto.getNewPassword().isBlank()){
             throw new AccountException("Customer password cannot be blank, please enter a valid password");
         }
-        //todo: we compare the user found with the token to the user retrieved
         Buyer buyer= buyerRepository.findBuyerByBuyerEmailAddress(customerUpdateDto.getEmailAddress()).orElseThrow(
                 () -> new AccountException("Customer With this email does not exist"));
-        if(!buyer.getPassword().equals(customerUpdateDto.getPreviousPassword())){
+        if(!passwordEncoder.matches(customerUpdateDto.getPreviousPassword(), buyer.getBuyerPassword())){
             throw new AccountException("Password is incorrect account cannot be updated");
         }
-        modelMapper.map(customerUpdateDto,buyer);
+        buyer.setBuyerPassword(passwordEncoder.encode(customerUpdateDto.getNewPassword()));
+        buyer.setBuyerEmailAddress(customerUpdateDto.getEmailAddress());
         log.info("buyer information after update -->{}",buyer);
         buyerRepository.save(buyer);
         return customerUpdateDto;

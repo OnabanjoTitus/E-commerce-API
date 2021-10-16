@@ -17,6 +17,7 @@ import com.ecommerce.web.exceptions.ProductException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,6 +29,8 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class SellerServicesImpl  implements SellerServices{
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @Autowired
     EmailService emailService;
     @Autowired
@@ -172,7 +175,30 @@ public class SellerServicesImpl  implements SellerServices{
 
     @Override
     public CustomerUpdateDto updateAccount(String authentication, CustomerUpdateDto customerUpdateDto) throws AccountException, AuthorizationException {
-        return null;
+        if(authentication.isBlank()){
+            throw new AuthorizationException("User token cannot be empty");
+        }
+        if(customerUpdateDto.getEmailAddress().isBlank()){
+            throw new AccountException("Customer email address cannot be blank, please enter a valid email address ");
+        }
+        if(customerUpdateDto.getPreviousPassword().isBlank()){
+            throw new AccountException("Customer password cannot be blank, please enter a valid password");
+        }
+        if(customerUpdateDto.getNewPassword().isBlank()){
+            throw new AccountException("Customer password cannot be blank, please enter a valid password");
+        }
+        Seller seller= sellerRepository.findSellerBySellerEmailAddress(customerUpdateDto.getEmailAddress()).orElseThrow(
+                () -> new AccountException("Customer With this email does not exist"));
+        if(!passwordEncoder.matches(customerUpdateDto.getPreviousPassword(), seller.getSellerPassword())){
+            throw new AccountException("Password is incorrect account cannot be updated");
+        }
+        seller.setSellerPassword(passwordEncoder.encode(customerUpdateDto.getNewPassword()));
+        seller.setSellerEmailAddress(customerUpdateDto.getEmailAddress());
+        seller.setSellerLocation(customerUpdateDto.getLocation());
+        log.info("seller information after update -->{}",seller);
+
+        sellerRepository.save(seller);
+        return customerUpdateDto;
     }
 
     private String extractFileName(String fileName){
