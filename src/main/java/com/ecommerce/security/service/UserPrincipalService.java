@@ -8,6 +8,7 @@ import com.ecommerce.data.repository.SellerRepository;
 import com.ecommerce.security.exceptions.IncorrectPasswordException;
 import com.ecommerce.security.security.AppAuthenticationProvider;
 import com.ecommerce.security.security.JWTToken;
+import com.ecommerce.web.exceptions.AccountCreationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,10 +61,13 @@ public class UserPrincipalService implements UserDetailsService {
 
     public JWTToken loginUser(UserLoginDto userLoginDto) throws UsernameNotFoundException, IncorrectPasswordException, AccountException {
        UserDetails userEntity = loadUserByUsername(userLoginDto.getEmailAddress());
-       String role=userEntity.getAuthorities().toString();
-       log.info("The role is -->{}",role);
-        Seller seller = new Seller();
-        Buyer buyer = new Buyer();
+        String role="";
+       if(!userEntity.isEnabled()){
+           throw new AccountException("Account is not enabled");
+       }
+       Seller seller= new Seller();
+       Buyer buyer= new Buyer();
+        role=userLoginDto.getRole().toString();
        switch (role){
            case "Seller":
                 seller=sellerRepository.findSellerBySellerEmailAddress(userLoginDto.getEmailAddress())
@@ -79,26 +83,19 @@ public class UserPrincipalService implements UserDetailsService {
 
         log.info(userEntity.getPassword() + " user password ==================================");
         log.info(passwordEncoder.encode(userLoginDto.getPassword()) + " encoded dto password ++++++++++++++++++++++++++++++++++");
-        boolean matchingResult=passwordEncoder.matches(userLoginDto.getPassword(),passwordEncoder.encode( userEntity.getPassword()));
+        boolean matchingResult=passwordEncoder.matches(userLoginDto.getPassword(),userEntity.getPassword());
         log.info(String.valueOf(matchingResult));
         if(!matchingResult){
         throw new IncorrectPasswordException("The password is Incorrect");
     }
-        final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                      userLoginDto.getEmailAddress(), userLoginDto.getPassword()
-                )
-        );
-        log.info("after authentication");
-        log.info("security context authentication");
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         JWTToken jwtToken;
         switch (role){
             case "Seller":
-                jwtToken = new JWTToken(tokenProviderService.generateLoginToken(authentication,seller));
+                jwtToken = new JWTToken(tokenProviderService.generateLoginToken(seller));
                 break;
             case "Buyer":
-                jwtToken = new JWTToken(tokenProviderService.generateLoginToken(authentication,buyer));
+                jwtToken = new JWTToken(tokenProviderService.generateLoginToken(buyer));
                break;
             default:
                 throw new AccountException("Invalid account type");
@@ -110,12 +107,15 @@ public class UserPrincipalService implements UserDetailsService {
     }
 
 
-    public String signUpUser(Buyer buyer) {
+    public String signUpUser(Buyer buyer) throws AccountCreationException {
         StringBuilder stringBuilder= new StringBuilder("Validates-Buyer");
         boolean userExists=buyerRepository.findBuyerByBuyerEmailAddress(buyer.getBuyerEmailAddress()).isPresent();
+        if(userExists){
+            throw new AccountCreationException("user with this email already exists");
+        }
         userExists=sellerRepository.findAllSellerBySellerName(buyer.getBuyerEmailAddress()).isPresent();
         if(userExists){
-            throw new IllegalStateException("user with this email already exists");
+            throw new AccountCreationException("user with this email already exists");
         }
 
         String encodedPassword=passwordEncoder.encode(buyer.getBuyerPassword());
@@ -125,12 +125,15 @@ public class UserPrincipalService implements UserDetailsService {
         buyerRepository.save(buyer);
         return stringBuilder.toString();
     }
-    public String signUpUser(Seller seller) {
+    public String signUpUser(Seller seller) throws AccountCreationException {
         StringBuilder stringBuilder= new StringBuilder("Validates-Seller");
         boolean userExists=buyerRepository.findBuyerByBuyerEmailAddress(seller.getSellerEmailAddress()).isPresent();
+        if(userExists){
+            throw new AccountCreationException("user with this email already exists");
+        }
         userExists=sellerRepository.findSellerBySellerEmailAddress(seller.getSellerEmailAddress()).isPresent();
         if(userExists){
-            throw new IllegalStateException("user with this email already exists");
+            throw new AccountCreationException("user with this email already exists");
         }
         String encodedPassword=passwordEncoder.encode(seller.getSellerPassword());
         seller.setSellerPassword(encodedPassword);

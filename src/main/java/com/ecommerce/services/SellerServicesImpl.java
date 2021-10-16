@@ -8,6 +8,7 @@ import com.ecommerce.dtos.*;
 import com.ecommerce.security.exceptions.IncorrectPasswordException;
 import com.ecommerce.security.security.JWTToken;
 import com.ecommerce.security.service.UserPrincipalService;
+import com.ecommerce.services.EmailServices.EmailService;
 import com.ecommerce.services.cloud.CloudStorageService;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
@@ -27,6 +28,8 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class SellerServicesImpl  implements SellerServices{
+    @Autowired
+    EmailService emailService;
     @Autowired
     ProductRepository productRepository;
 
@@ -71,6 +74,7 @@ public class SellerServicesImpl  implements SellerServices{
             throw new AccountCreationException("Error creating seller's account");
         }
         SellerDto sellerDto= new SellerDto(sellerRequestDto.getSellerEmailAddress(),sellerRequestDto.getSellerName(),sellerRequestDto.getSellerLocation());
+        emailService.sendMail(sellerDto);
         return sellerDto;
     }
 

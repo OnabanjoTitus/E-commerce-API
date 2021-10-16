@@ -46,14 +46,12 @@ public class TokenProviderServiceImpl implements Serializable, TokenProviderServ
 
 
     @Override
-    public String generateLoginToken(Authentication authentication, Buyer buyer) {
-        final String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+    public String generateLoginToken(Buyer buyer) {
+        final String authorities = buyer.getRole().toString();
         log.info(authorities);
 
         String jwts = Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(buyer.getBuyerEmailAddress())
                 .claim(AUTHORITIES_KEY, authorities)
                 .setIssuer("E-COMMERCEBYTEE")
                 .signWith(SignatureAlgorithm.HS512, getEncryptedSigningKey())
@@ -66,14 +64,11 @@ public class TokenProviderServiceImpl implements Serializable, TokenProviderServ
     }
 
     @Override
-    public String generateLoginToken(Authentication authentication, Seller seller) {
-        final String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+    public String generateLoginToken(Seller seller) {
+        final String authorities = seller.getRole().toString();
         log.info(authorities);
-
         String jwts = Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(seller.getSellerEmailAddress())
                 .claim(AUTHORITIES_KEY, authorities)
                 .setIssuer("E-COMMERCEBYTEE")
                 .signWith(SignatureAlgorithm.HS512, getEncryptedSigningKey())

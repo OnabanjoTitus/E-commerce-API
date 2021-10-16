@@ -8,6 +8,7 @@ import com.ecommerce.dtos.*;
 import com.ecommerce.security.exceptions.IncorrectPasswordException;
 import com.ecommerce.security.security.JWTToken;
 import com.ecommerce.security.service.UserPrincipalService;
+import com.ecommerce.services.EmailServices.EmailService;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import com.ecommerce.web.exceptions.AuthorizationException;
@@ -23,7 +24,8 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class BuyerServicesImpl implements BuyerServices {
-
+    @Autowired
+    EmailService emailService;
     @Autowired
     SellerRepository sellerRepository;
     @Autowired
@@ -61,6 +63,7 @@ public class BuyerServicesImpl implements BuyerServices {
             throw new AccountCreationException("Error creating buyer's account");
         }
         BuyerDto buyerDto= new BuyerDto(buyerRequestDto.getBuyerEmailAddress());
+        emailService.sendMail(buyerDto);
         return buyerDto ;
     }
 

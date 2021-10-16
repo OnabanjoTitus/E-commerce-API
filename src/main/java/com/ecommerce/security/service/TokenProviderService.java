@@ -12,8 +12,8 @@ import java.util.function.Function;
 
 
 public interface TokenProviderService {
-    String generateLoginToken(Authentication authentication, Buyer buyer);
-    String generateLoginToken(Authentication authentication, Seller seller);
+    String generateLoginToken( Buyer buyer);
+    String generateLoginToken(Seller seller);
     String getEmailFromToken(String token);
 
     <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver);
