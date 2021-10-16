@@ -35,7 +35,7 @@ public class SellerController {
 
     }
     @PostMapping(ApiRoutes.SELLER+"/productUpload")
-    public ResponseEntity<?> uploadProduct(@RequestHeader("Authorization")String authentication, ProductDto productDto) {
+    public ResponseEntity<?> uploadProduct(@RequestHeader("Authorization")String authentication,@RequestBody ProductDto productDto) {
         try {
             return new ResponseEntity<>(sellerServices.sellerUploadsProduct(authentication, productDto), HttpStatus.OK);
         } catch (ProductException | AccountException exception) {
@@ -45,7 +45,7 @@ public class SellerController {
     }
 
     @PostMapping(ApiRoutes.SELLER+"/sellerLogin")
-    public  ResponseEntity<?>buyerLogin(UserLoginDto userLoginDto){
+    public  ResponseEntity<?>buyerLogin(@RequestBody UserLoginDto userLoginDto){
         try{
             userLoginDto.setRole(Role.SELLER);
             return new ResponseEntity<>(sellerServices.sellerLogin(userLoginDto),HttpStatus.OK);

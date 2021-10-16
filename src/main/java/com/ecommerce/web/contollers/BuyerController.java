@@ -26,7 +26,7 @@ public class BuyerController {
     BuyerServices buyerServices;
 
     @PostMapping(ApiRoutes.BUYER+"/buyerLogin")
-    public  ResponseEntity<?>buyerLogin(UserLoginDto userLoginDto){
+    public  ResponseEntity<?>buyerLogin(@RequestBody UserLoginDto userLoginDto){
         try{
             userLoginDto.setRole(Role.BUYER);
         return new ResponseEntity<>(buyerServices.buyerLogin(userLoginDto),HttpStatus.OK);
@@ -36,7 +36,8 @@ public class BuyerController {
         }
     }
     @PostMapping(ApiRoutes.BUYER+"/buyerRegistration")
-    public ResponseEntity<?> createAccount(BuyerRequestDto buyerRequestDto){
+    public ResponseEntity<?> createAccount(@RequestBody BuyerRequestDto buyerRequestDto){
+        log.info("The Customer Information received is -->{}", buyerRequestDto);
            try{
                return new ResponseEntity<>( buyerServices.addAccount(buyerRequestDto), HttpStatus.OK);
            }
@@ -46,7 +47,7 @@ public class BuyerController {
     }
 
     @GetMapping(ApiRoutes.BUYER+"/findSellerByName")
-    public ResponseEntity<?> findSellerByName(String sellerName){
+    public ResponseEntity<?> findSellerByName(@RequestBody String sellerName){
         try{
 
             return new ResponseEntity<>( buyerServices.findSellerByName(sellerName), HttpStatus.OK);
@@ -56,7 +57,7 @@ public class BuyerController {
         }
     }
     @GetMapping(ApiRoutes.BUYER+"/findProductByName")
-    public ResponseEntity<?> findProductsByName(String productName){
+    public ResponseEntity<?> findProductsByName(@RequestBody String productName){
         try{
             return new ResponseEntity<>( buyerServices.findProductsByName(productName), HttpStatus.OK);
         }
@@ -65,7 +66,7 @@ public class BuyerController {
         }
     }
     @GetMapping(ApiRoutes.BUYER+"/findProductsBySellerName")
-    public ResponseEntity<?> findProductBySellerName(String sellerName){
+    public ResponseEntity<?> findProductBySellerName(@RequestBody String sellerName){
         try{
             return new ResponseEntity<>( buyerServices.findProductsBySellerName(sellerName), HttpStatus.OK);
         }
@@ -74,7 +75,7 @@ public class BuyerController {
         }
     }
     @PostMapping(ApiRoutes.BUYER+"/buyerAccountUpdate")
-    public ResponseEntity<?> updateAccount(@RequestHeader("Authorization")String token,CustomerUpdateDto customerUpdateDto){
+    public ResponseEntity<?> updateAccount(@RequestHeader("Authorization")String token,@RequestBody CustomerUpdateDto customerUpdateDto){
         try{
 
             return new ResponseEntity<>( buyerServices.updateAccount(token,customerUpdateDto), HttpStatus.OK);
