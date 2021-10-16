@@ -46,8 +46,10 @@ public class UserPrincipalService implements UserDetailsService {
 
          optionalBuyer= buyerRepository.findBuyerByBuyerEmailAddress(username);
         if(optionalBuyer.isEmpty()){
-            optionalSeller=sellerRepository.findAllSellerBySellerName(username);
+            log.info("Check this email2 " + username);
+            optionalSeller=sellerRepository.findSellerBySellerEmailAddress(username);
             if(optionalSeller.isEmpty()){
+                log.info("Check this email3 " + username);
                 throw new UsernameNotFoundException("User with this email is not found");}
         }
         if(optionalBuyer.isPresent()){

@@ -15,8 +15,6 @@ public class Buyer implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer buyerId;
-    @ManyToOne
-    private Cart cart;
     @Column
     private String buyerEmailAddress;
     @Column

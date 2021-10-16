@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(ApiRoutes.CUSTOMERS)
@@ -36,8 +37,10 @@ public class SellerController {
 
     }
     @PostMapping(ApiRoutes.SELLER+"/productUpload")
-    public ResponseEntity<?> uploadProduct(@RequestHeader("Authorization")String authentication,@RequestBody ProductDto productDto) {
+    public ResponseEntity<?> uploadProduct(@RequestHeader("Authorization")String authentication, @ModelAttribute ProductDto productDto) {
         try {
+            log.info("The image is-->{}",productDto.getProductImage());
+
             return new ResponseEntity<>(sellerServices.sellerUploadsProduct(authentication, productDto), HttpStatus.OK);
         } catch (ProductException | AccountException | AuthorizationException exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);

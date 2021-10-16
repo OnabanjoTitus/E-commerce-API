@@ -1,5 +1,7 @@
 package com.ecommerce.data.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,7 +24,8 @@ public class Seller implements UserDetails {
     private String sellerName;
     @Column
     private String sellerLocation;
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JsonBackReference
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn
     private List<Product> products;
     public void addComment(Product product){
