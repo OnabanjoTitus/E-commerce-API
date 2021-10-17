@@ -12,11 +12,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.web.util.UrlUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -61,9 +64,12 @@ class CloudinaryCloudStorageServiceImplTest {
 
         log.info("File name -->{}",productDto.getProductImage().getOriginalFilename());
 
-        cloudStorageServiceImpl.uploadImage(multipartFile, ObjectUtils.asMap("public_id","test-Image/"+extractFileName(Objects.requireNonNull
+        Map<?,?> uploadResult= cloudStorageServiceImpl.uploadImage(multipartFile, ObjectUtils.asMap("public_id","test-Image/"+extractFileName(Objects.requireNonNull
                 (productDto.getProductImage().getOriginalFilename()))));
         assertThat(productDto.getProductImage().getOriginalFilename()).isEqualTo("937259.jpg");
+
+       boolean isValidUrl= UrlUtils.isAbsoluteUrl(String.valueOf(uploadResult.get("url")));
+        assertThat(isValidUrl).isTrue();
     }
 
     private String extractFileName(String fileName) {

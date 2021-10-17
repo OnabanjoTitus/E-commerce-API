@@ -19,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductRepositoryTest {
     @Autowired
     ProductRepository productRepository;
-    @Autowired
-    SellerRepository sellerRepository;
     Seller seller;
     Product product;
     @BeforeEach
@@ -32,9 +30,8 @@ class ProductRepositoryTest {
         seller.setSellerEmailAddress("Test@gmail.com");
         seller.addProduct(new Product());
         seller.setRole(Role.SELLER);
-        sellerRepository.save(seller);
         product= new Product();
-        product.setSeller(sellerRepository.findSellerBySellerEmailAddress("Test@gmail.com").get());
+        product.setSeller(seller);
         product.setProductPrice(BigDecimal.valueOf(100));
         product.setProductName("Test-Shirt");
         product.setProductDescription("Nice shirt");
