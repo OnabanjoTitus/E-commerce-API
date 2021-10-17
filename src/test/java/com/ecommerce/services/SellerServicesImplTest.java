@@ -34,41 +34,41 @@ class SellerServicesImplTest {
     void tearDown() {
     }
 
-    @Test
-    @Transactional
-    void addAccount() throws AccountCreationException {
-        sellerRequestDto.setSellerName("Sales");
-        sellerRequestDto.setSellerEmailAddress("1234");
-        sellerRequestDto.setSellerPassword("111");
-        sellerRequestDto.setConfirmPassword("111");
-        SellerDto sellerDto=  sellerServices.addAccount(sellerRequestDto);
-        assertThat(sellerDto.getSellerEmailAddress()).isEqualTo(sellerRequestDto.getSellerEmailAddress());
-        assertThat(sellerRepository.findAllSellerBySellerName(sellerDto.getSellerName()).get().getRole()).isEqualTo(Role.SELLER);
-    }
-
-    @Test
-    @Transactional
-    void findSellerByName() throws AccountCreationException {
-        sellerRequestDto.setSellerName("Sales");
-        sellerRequestDto.setSellerEmailAddress("1234");
-        sellerRequestDto.setSellerPassword("111");
-        sellerRequestDto.setConfirmPassword("111");
-        SellerDto sellerDto=  sellerServices.addAccount(sellerRequestDto);
-        assertThat(sellerDto.getSellerEmailAddress()).isEqualTo(sellerRequestDto.getSellerEmailAddress());
-        assertThat(sellerDto.getSellerEmailAddress()).isEqualTo(sellerRepository.findAllSellerBySellerName(sellerDto.getSellerName()).get().getSellerEmailAddress());
-        assertThat(sellerRepository.findAllSellerBySellerName(sellerDto.getSellerName()).get().getRole()).isEqualTo(Role.SELLER);
-    }
-
-    @Test
-    void findProductsByName() {
-
-    }
-
-    @Test
-    void findProductsBySellerName() {
-    }
-
-    @Test
-    void sellerUploadsProduct() {
-    }
+//    @Test
+//    @Transactional
+//    void addAccount() throws AccountCreationException {
+//        sellerRequestDto.setSellerName("Sales");
+//        sellerRequestDto.setSellerEmailAddress("1234");
+//        sellerRequestDto.setSellerPassword("111");
+//        sellerRequestDto.setConfirmPassword("111");
+//        SellerDto sellerDto=  sellerServices.addAccount(sellerRequestDto);
+//        assertThat(sellerDto.getSellerEmailAddress()).isEqualTo(sellerRequestDto.getSellerEmailAddress());
+//        assertThat(sellerRepository.findAllSellerBySellerName(sellerDto.getSellerName()).get().getRole()).isEqualTo(Role.SELLER);
+//    }
+//
+//    @Test
+//    @Transactional
+//    void findSellerByName() throws AccountCreationException {
+//        sellerRequestDto.setSellerName("Sales");
+//        sellerRequestDto.setSellerEmailAddress("1234");
+//        sellerRequestDto.setSellerPassword("111");
+//        sellerRequestDto.setConfirmPassword("111");
+//        SellerDto sellerDto=  sellerServices.addAccount(sellerRequestDto);
+//        assertThat(sellerDto.getSellerEmailAddress()).isEqualTo(sellerRequestDto.getSellerEmailAddress());
+//        assertThat(sellerDto.getSellerEmailAddress()).isEqualTo(sellerRepository.findAllSellerBySellerName(sellerDto.getSellerName()).get().getSellerEmailAddress());
+//        assertThat(sellerRepository.findAllSellerBySellerName(sellerDto.getSellerName()).get().getRole()).isEqualTo(Role.SELLER);
+//    }
+//
+//    @Test
+//    void findProductsByName() {
+//
+//    }
+//
+//    @Test
+//    void findProductsBySellerName() {
+//    }
+//
+//    @Test
+//    void sellerUploadsProduct() {
+//    }
 }

@@ -19,6 +19,7 @@ import java.util.List;
 public class Seller implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
     private Integer sellerId;
     @Column
     private String sellerName;
@@ -28,7 +29,7 @@ public class Seller implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn
     private List<Product> products;
-    public void addComment(Product product){
+    public void addProduct(Product product){
         if(this.products==null){
             this.products=new ArrayList<>();
         }
@@ -37,43 +38,51 @@ public class Seller implements UserDetails {
     @Column
     private String sellerEmailAddress;
     @Column
+    @JsonIgnore
     private String sellerPassword;
 
     @Column
     private Role Role;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority simpleGrantedAuthority= new SimpleGrantedAuthority(getRole().name());
         return Collections.singletonList(simpleGrantedAuthority);
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return getSellerPassword();
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return getSellerEmailAddress();
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }

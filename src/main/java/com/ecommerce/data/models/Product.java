@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
+    @JsonIgnore
     private Integer productId;
     @Column
     private String productName;
