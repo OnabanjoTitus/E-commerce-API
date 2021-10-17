@@ -2,15 +2,13 @@ package com.ecommerce.security.service;
 
 import com.ecommerce.data.models.Buyer;
 import com.ecommerce.data.models.Seller;
-import com.ecommerce.dtos.UserLoginDto;
 import com.ecommerce.data.repository.BuyerRepository;
 import com.ecommerce.data.repository.SellerRepository;
+import com.ecommerce.dtos.UserLoginDto;
 import com.ecommerce.security.exceptions.IncorrectPasswordException;
 import com.ecommerce.security.security.JWTToken;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AuthorizationException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountException;
-import javax.xml.bind.DatatypeConverter;
 import java.util.Optional;
 import java.util.UUID;
 
