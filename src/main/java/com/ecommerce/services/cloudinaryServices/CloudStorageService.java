@@ -1,4 +1,4 @@
-package com.ecommerce.services.cloud;
+package com.ecommerce.services.cloudinaryServices;
 
 import org.springframework.web.multipart.MultipartFile;
 

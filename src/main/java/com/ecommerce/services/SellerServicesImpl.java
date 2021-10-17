@@ -9,7 +9,7 @@ import com.ecommerce.security.exceptions.IncorrectPasswordException;
 import com.ecommerce.security.security.JWTToken;
 import com.ecommerce.security.service.UserPrincipalService;
 import com.ecommerce.services.EmailServices.EmailService;
-import com.ecommerce.services.cloud.CloudStorageService;
+import com.ecommerce.services.cloudinaryServices.CloudStorageService;
 import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import com.ecommerce.web.exceptions.AuthorizationException;

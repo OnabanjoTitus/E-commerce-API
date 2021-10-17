@@ -1,9 +1,6 @@
-package com.ecommerce.services.cloud;
+package com.ecommerce.services.cloudinaryServices;
 
 import com.cloudinary.utils.ObjectUtils;
-import com.ecommerce.data.models.Product;
-import com.ecommerce.data.models.Role;
-import com.ecommerce.data.models.Seller;
 import com.ecommerce.dtos.ProductDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -17,9 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;

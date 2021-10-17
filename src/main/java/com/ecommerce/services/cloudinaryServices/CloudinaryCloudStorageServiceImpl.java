@@ -1,4 +1,4 @@
-package com.ecommerce.services.cloud;
+package com.ecommerce.services.cloudinaryServices;
 
 import com.cloudinary.Cloudinary;
 import org.springframework.beans.factory.annotation.Autowired;
