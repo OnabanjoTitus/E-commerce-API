@@ -1,6 +1,5 @@
 package com.ecommerce.data.repository;
 
-import com.ecommerce.data.models.Buyer;
 import com.ecommerce.data.models.Product;
 import com.ecommerce.data.models.Role;
 import com.ecommerce.data.models.Seller;
@@ -12,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @Transactional
 class SellerRepositoryTest {
