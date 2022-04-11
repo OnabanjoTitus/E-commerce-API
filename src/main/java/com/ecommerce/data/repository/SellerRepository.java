@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface SellerRepository extends JpaRepository<Seller,Integer> {
 
     Optional<List<Seller>>findAllSellerBySellerName(String SellerName);
+
     Optional<List<Seller>>findAllSellerBySellerNameContaining(String sellerName);
+
     Optional<Seller>findSellerBySellerEmailAddress(String sellerEmail);
 }

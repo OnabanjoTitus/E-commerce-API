@@ -24,7 +24,7 @@ import javax.xml.bind.DatatypeConverter;
 import static com.ecommerce.security.security.SecurityConstants.SIGNING_KEY_STRING;
 
 @RestController
-@RequestMapping(ApiRoutes.CUSTOMERS)
+@RequestMapping("/api")
 @Slf4j
 public class BuyerController {
 

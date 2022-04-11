@@ -21,6 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 authorizeRequests()
                 .antMatchers(ApiRoutes.CUSTOMERS+"/buyer/***",ApiRoutes.CUSTOMERS+"/seller/***")
                 .permitAll()
+                .antMatchers("/swagger-ui/","/api/**", "/swagger-ui.html", "/webjars/**", "/v2/**", "/swagger-resources/**").anonymous()
                 .anyRequest()
                 .authenticated().and()
                 .formLogin();

@@ -9,8 +9,9 @@ import java.math.BigDecimal;
 @Data
 @Entity
 public class Product {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonIgnore
     private Integer productId;
     @Column
@@ -23,8 +24,9 @@ public class Product {
     private String productImage;
     @Column
     private String productCategory;
+
     @JsonManagedReference
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Seller seller;
 

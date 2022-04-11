@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BuyerDto {
     private String buyerEmailAddress;
+
     public BuyerDto(String buyerEmailAddress) {
         this.buyerEmailAddress=buyerEmailAddress;
     }

@@ -22,9 +22,6 @@ public class Buyer implements UserDetails {
     @Column
     private Role Role;
 
-
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority simpleGrantedAuthority= new SimpleGrantedAuthority(getRole().name());

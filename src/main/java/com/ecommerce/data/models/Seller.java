@@ -25,10 +25,12 @@ public class Seller implements UserDetails {
     private String sellerName;
     @Column
     private String sellerLocation;
+
     @JsonBackReference
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn
     private List<Product> products;
+
     public void addProduct(Product product){
         if(this.products==null){
             this.products=new ArrayList<>();
@@ -37,6 +39,7 @@ public class Seller implements UserDetails {
     }
     @Column
     private String sellerEmailAddress;
+
     @Column
     @JsonIgnore
     private String sellerPassword;

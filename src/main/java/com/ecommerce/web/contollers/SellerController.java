@@ -20,9 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping(ApiRoutes.CUSTOMERS)
+@RequestMapping("/api")
 @Slf4j
 public class SellerController {
+
     @Autowired
     SellerServices sellerServices;
 
@@ -36,6 +37,7 @@ public class SellerController {
         }
 
     }
+
     @PostMapping(ApiRoutes.SELLER+"/productUpload")
     public ResponseEntity<?> uploadProduct(@RequestHeader("Authorization")String authentication, @ModelAttribute ProductDto productDto) {
         try {

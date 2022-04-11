@@ -41,7 +41,6 @@ public class TokenProviderServiceImpl implements Serializable, TokenProviderServ
     public String generateLoginToken(Buyer buyer) {
         final String authorities = buyer.getRole().toString();
         log.info(authorities);
-
         String jwts = Jwts.builder()
                 .setSubject(buyer.getBuyerEmailAddress())
                 .claim(AUTHORITIES_KEY, authorities)

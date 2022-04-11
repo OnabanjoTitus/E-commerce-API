@@ -4,7 +4,6 @@ import lombok.Data;
 
 
 @Data
-
 public class JWTToken {
     private String accessToken;
     private TokenType tokenType = TokenType.BEARER_TOKEN;

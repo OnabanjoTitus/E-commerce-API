@@ -11,10 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository  extends JpaRepository<Product, String> {
+public interface ProductRepository extends JpaRepository<Product, String> {
 
     Optional<List<Product>> findAllByProductNameContains(String name);
+
     Optional<List<Product>> findAllBySellerSellerNameContains(String name);
+
+
 
 }
 

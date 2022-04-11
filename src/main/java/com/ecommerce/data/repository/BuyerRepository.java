@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface BuyerRepository extends JpaRepository<Buyer,Integer> {
 
-
    Optional<Buyer>findBuyerByBuyerEmailAddress(String emailAddress);
+
 }
 
