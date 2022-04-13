@@ -27,8 +27,7 @@ public class SellerController {
 
     @PostMapping(ApiRoutes.SELLER+"/sellerRegistration")
     @ApiOperation( value = "Register Sellers Only",
-        notes = "provide the adequate parameters for registration",
-            response = SellerDto.class
+        notes = "provide the adequate parameters for registration"
     )
     public ResponseEntity<?> createAccount(@RequestBody SellerRequestDto sellerRequestDto){
         try{
