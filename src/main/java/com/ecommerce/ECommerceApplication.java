@@ -14,9 +14,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.RequestHandler;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.Collections;
 
 @SpringBootApplication
 @EnableSwagger2
@@ -40,9 +44,26 @@ public class ECommerceApplication {
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.any())
 				.paths(PathSelectors.any())
-				.build();
+				.apis(RequestHandlerSelectors.basePackage("com.ecommerce"))
+				.build()
+				.apiInfo(apiDetails());
+	}
+	private ApiInfo apiDetails(){
+		return new ApiInfo(
+				"E commerce API",
+				"Set of Apis for the E commerce API",
+				"1.0",
+				"For E-commerce only",
+				new Contact("Tee","e-commercebytee","onabanjotitus01@gmail.com"),
+				"E commerce License",
+				"EcommerceBytee",
+				Collections.emptyList()
+
+
+
+		);
+
 	}
 
 }

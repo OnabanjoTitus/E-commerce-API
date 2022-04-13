@@ -1,10 +1,7 @@
 package com.ecommerce.web.contollers;
 
 import com.ecommerce.data.models.Role;
-import com.ecommerce.dtos.CustomerUpdateDto;
-import com.ecommerce.dtos.ProductDto;
-import com.ecommerce.dtos.SellerRequestDto;
-import com.ecommerce.dtos.UserLoginDto;
+import com.ecommerce.dtos.*;
 import com.ecommerce.security.exceptions.IncorrectPasswordException;
 import com.ecommerce.services.SellerServices;
 import com.ecommerce.web.contollers.util.ApiRoutes;
@@ -12,6 +9,7 @@ import com.ecommerce.web.exceptions.AccountCreationException;
 import com.ecommerce.web.exceptions.AccountException;
 import com.ecommerce.web.exceptions.AuthorizationException;
 import com.ecommerce.web.exceptions.ProductException;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +26,10 @@ public class SellerController {
     SellerServices sellerServices;
 
     @PostMapping(ApiRoutes.SELLER+"/sellerRegistration")
+    @ApiOperation( value = "Register Sellers Only",
+        notes = "provide the adequate parameters for registration",
+            response = SellerDto.class
+    )
     public ResponseEntity<?> createAccount(@RequestBody SellerRequestDto sellerRequestDto){
         try{
             return new ResponseEntity<>( sellerServices.addAccount(sellerRequestDto), HttpStatus.OK);
